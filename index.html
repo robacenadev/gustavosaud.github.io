@@ -8,44 +8,50 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-
 :root{
-  --bg:#030805;
-  --card:#080f0a;
-  --card2:#0b1510;
-  --border:#0f2016;
-  --bord2:#183024;
+  --bg:#020a05;
+  --card:#07110a;
+  --card2:#0c1a10;
+  --border:#0e1f12;
+  --bord2:#163320;
   --green:#50fa7b;
-  --glow:rgba(80,250,123,0.12);
-  --glow2:rgba(80,250,123,0.06);
   --muted:#2d6642;
   --dim:#1a4028;
   --text:#dff2e7;
   --sub:#4a7a5e;
 }
+body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospace;overflow-x:hidden;}
 
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'IBM Plex Mono',monospace;
-  overflow-x:hidden;
-  min-height:100vh;
+/* ── MATRIX CANVAS ── */
+#matrix-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.18;pointer-events:none;}
+
+/* ── FLOATING COMMANDS ── */
+.float-cmd{
+  position:fixed;font-size:10px;color:var(--green);
+  opacity:0;pointer-events:none;z-index:1;white-space:nowrap;
+  font-family:'IBM Plex Mono',monospace;letter-spacing:0.05em;
+  animation:floatup 12s linear infinite;
+}
+@keyframes floatup{
+  0%{opacity:0;transform:translateY(0);}
+  5%{opacity:0.25;}
+  90%{opacity:0.1;}
+  100%{opacity:0;transform:translateY(-100vh);}
 }
 
-/* Noise texture */
-body::before{
-  content:'';
-  position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:0;opacity:0.4;
+/* ── SCANLINE ── */
+body::after{
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.06) 3px,rgba(0,0,0,0.06) 4px);
+  pointer-events:none;z-index:2;
 }
 
-/* NAV */
+/* ── NAV ── */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
+  position:fixed;top:0;left:0;right:0;z-index:300;
   display:flex;align-items:center;justify-content:space-between;
   padding:0 40px;height:48px;
-  background:rgba(3,8,5,0.9);
+  background:rgba(2,10,5,0.92);
   border-bottom:1px solid var(--border);
   backdrop-filter:blur(20px);
 }
@@ -55,277 +61,148 @@ nav{
 .nav-links a{font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:0.12em;transition:color 0.2s;}
 .nav-links a:hover{color:var(--green);}
 
-/* HERO */
+/* ── SECTIONS ── */
+section{position:relative;z-index:10;padding:96px 40px;}
+
+/* ── HERO ── */
 #hero{
   min-height:100vh;
-  display:grid;
-  grid-template-columns:1fr 1fr;
+  display:grid;grid-template-columns:1fr 1fr;
   align-items:center;
-  padding:80px 40px 40px;
-  position:relative;z-index:1;
-  gap:40px;
+  padding:80px 40px 40px;gap:40px;
 }
-.hero-left{}
-.hero-tag{
-  font-size:10px;color:var(--muted);
-  letter-spacing:0.25em;margin-bottom:20px;
-  display:flex;align-items:center;gap:10px;
-}
+.hero-tag{font-size:10px;color:var(--muted);letter-spacing:0.25em;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
 .hero-tag::before{content:'';width:24px;height:1px;background:var(--green);}
-h1{
-  font-size:clamp(52px,7vw,88px);
-  font-weight:600;line-height:0.9;
-  letter-spacing:-0.03em;margin-bottom:24px;
-}
+h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing:-0.03em;margin-bottom:24px;}
 .h1-solid{color:var(--text);}
 .h1-outline{color:transparent;-webkit-text-stroke:1px var(--green);}
-.hero-sub{
-  font-size:12px;color:var(--sub);
-  line-height:1.9;margin-bottom:36px;
-  font-weight:300;max-width:380px;
-}
+.hero-sub{font-size:12px;color:var(--sub);line-height:1.9;margin-bottom:36px;font-weight:300;max-width:380px;}
 .hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
-.btn{
-  font-family:'IBM Plex Mono',monospace;
-  font-size:11px;letter-spacing:0.08em;
-  padding:11px 22px;border-radius:3px;
-  text-decoration:none;transition:all 0.2s;
-  display:inline-block;cursor:pointer;
-}
-.btn-p{
-  background:var(--green);color:var(--bg);
-  font-weight:600;border:1px solid var(--green);
-}
-.btn-p:hover{background:transparent;color:var(--green);}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;padding:11px 22px;border-radius:3px;text-decoration:none;transition:all 0.25s;display:inline-block;}
+.btn-p{background:var(--green);color:var(--bg);font-weight:600;border:1px solid var(--green);}
+.btn-p:hover{background:transparent;color:var(--green);box-shadow:0 0 20px rgba(80,250,123,0.2);}
 .btn-g{border:1px solid var(--bord2);color:var(--sub);}
 .btn-g:hover{border-color:var(--green);color:var(--green);}
 
-/* Hero right — bento mini grid */
-.hero-right{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  grid-template-rows:auto auto auto;
-  gap:10px;
-}
+/* hero right grid */
+.hero-right{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .hcard{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:20px;
-  transition:border-color 0.25s, background 0.25s;
+  background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;
   position:relative;overflow:hidden;
+  transition:border-color 0.3s,background 0.3s,transform 0.3s,box-shadow 0.3s;
 }
-.hcard:hover{border-color:var(--bord2);background:var(--card2);}
-.hcard::after{
-  content:'';position:absolute;
-  inset:0;border-radius:8px;
-  background:radial-gradient(circle at 50% 0%, var(--glow2), transparent 70%);
-  opacity:0;transition:opacity 0.3s;
-  pointer-events:none;
-}
-.hcard:hover::after{opacity:1;}
-.hcard-span2{grid-column:span 2;}
+.hcard:hover{border-color:var(--bord2);background:var(--card2);transform:translateY(-3px);box-shadow:0 8px 32px rgba(80,250,123,0.06);}
+.hcard::before{content:'';position:absolute;inset:0;border-radius:8px;background:radial-gradient(circle at 50% 0%,rgba(80,250,123,0.05),transparent 70%);opacity:0;transition:opacity 0.3s;}
+.hcard:hover::before{opacity:1;}
 .hcard-label{font-size:9px;color:var(--muted);letter-spacing:0.2em;margin-bottom:10px;}
 .hcard-val{font-size:22px;font-weight:600;color:var(--green);letter-spacing:-0.02em;}
 .hcard-sub{font-size:10px;color:var(--sub);margin-top:4px;}
-.status-dot{
-  display:inline-block;width:7px;height:7px;
-  border-radius:50%;background:var(--green);
-  margin-right:6px;
-  animation:pulse 2s ease-in-out infinite;
-}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(80,250,123,0.5);}50%{box-shadow:0 0 0 6px rgba(80,250,123,0);}}
-
+.hcard-span2{grid-column:span 2;}
+.status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:6px;animation:pulse-dot 2s ease-in-out infinite;}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(80,250,123,0.5);}50%{box-shadow:0 0 0 6px rgba(80,250,123,0);}}
 .tech-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
-.tech{
-  font-size:9px;color:var(--muted);
-  border:1px solid var(--border);
-  padding:3px 8px;border-radius:2px;
-  transition:all 0.2s;
-}
-.tech:hover,.tech.on{color:var(--green);border-color:var(--dim);}
+.tech{font-size:9px;color:var(--muted);border:1px solid var(--border);padding:3px 8px;border-radius:2px;transition:all 0.2s;}
+.tech.on,.tech:hover{color:var(--green);border-color:var(--dim);}
 
-/* BENTO GRID — main sections */
-.bento-section{
-  padding:60px 40px;
-  position:relative;z-index:1;
-}
-.bento-section-label{
+/* ── SECTION LABEL ── */
+.sec-label{
   font-size:10px;color:var(--muted);letter-spacing:0.25em;
-  margin-bottom:28px;
-  display:flex;align-items:center;gap:10px;
+  margin-bottom:28px;display:flex;align-items:center;gap:10px;
 }
-.bento-section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
 
-/* PROJECTS bento */
-.proj-bento{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  grid-template-rows:auto auto;
-  gap:10px;
-}
-.pcard{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:28px;
-  transition:all 0.25s;
+/* ── CARD BASE ── */
+.card-base{
+  background:var(--card);border:1px solid var(--border);border-radius:10px;
+  transition:background 0.3s,border-color 0.3s,transform 0.3s,box-shadow 0.3s;
   position:relative;overflow:hidden;
-  cursor:default;
 }
-.pcard::before{
-  content:'';position:absolute;
-  left:0;top:0;bottom:0;width:2px;
-  background:var(--green);
-  transform:scaleY(0);transform-origin:bottom;
-  transition:transform 0.3s ease;
-}
-.pcard:hover{background:var(--card2);border-color:var(--bord2);}
+.card-base:hover{background:var(--card2);border-color:var(--bord2);transform:translateY(-4px);box-shadow:0 12px 40px rgba(80,250,123,0.07);}
+.card-base::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent);transform:scaleX(0);transition:transform 0.4s ease;}
+.card-base:hover::after{transform:scaleX(1);}
+
+/* ── PROJECTS ── */
+.proj-bento{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.pcard{padding:28px;}
+.pcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--green);transform:scaleY(0);transform-origin:bottom;transition:transform 0.4s ease;}
 .pcard:hover::before{transform:scaleY(1);}
 .pcard-wide{grid-column:span 2;}
-.pcard-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:9px;color:var(--green);
-  background:rgba(80,250,123,0.07);
-  border:1px solid rgba(80,250,123,0.15);
-  padding:4px 10px;border-radius:2px;
-  margin-bottom:16px;letter-spacing:0.12em;
-}
+.pcard-badge{display:inline-flex;align-items:center;gap:6px;font-size:9px;color:var(--green);background:rgba(80,250,123,0.07);border:1px solid rgba(80,250,123,0.15);padding:4px 10px;border-radius:2px;margin-bottom:16px;letter-spacing:0.12em;}
 .pcard-num{font-size:9px;color:var(--dim);margin-bottom:8px;letter-spacing:0.1em;}
 .pcard-name{font-size:17px;font-weight:600;color:var(--text);margin-bottom:10px;line-height:1.2;}
 .pcard-desc{font-size:11px;color:var(--sub);line-height:1.9;font-weight:300;}
 .pcard-stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px;}
-.stag{font-size:9px;color:var(--muted);border:1px solid var(--border);background:var(--bg);padding:3px 8px;border-radius:2px;}
+.stag{font-size:9px;color:var(--muted);border:1px solid var(--border);background:var(--bg);padding:3px 8px;border-radius:2px;transition:all 0.2s;}
+.stag:hover{color:var(--green);border-color:var(--dim);}
 
-/* EXP bento */
-.exp-bento{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-.ecard{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:26px;
-  transition:all 0.25s;
-}
-.ecard:hover{background:var(--card2);border-color:var(--bord2);}
+/* ── EXPERIENCE ── */
+.exp-bento{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.ecard{padding:26px;}
 .ecard-period{font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
-.ecard-now{
-  font-size:8px;color:var(--green);
-  background:rgba(80,250,123,0.07);
-  border:1px solid rgba(80,250,123,0.15);
-  padding:2px 7px;border-radius:2px;letter-spacing:0.1em;
-}
+.ecard-now{font-size:8px;color:var(--green);background:rgba(80,250,123,0.07);border:1px solid rgba(80,250,123,0.15);padding:2px 7px;border-radius:2px;letter-spacing:0.1em;}
 .ecard-co{font-size:10px;color:var(--green);letter-spacing:0.15em;margin-bottom:5px;}
 .ecard-role{font-size:14px;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.3;}
 .ecard-ul{list-style:none;display:flex;flex-direction:column;gap:7px;}
-.ecard-ul li{
-  font-size:10px;color:var(--sub);
-  line-height:1.8;padding-left:14px;
-  position:relative;font-weight:300;
-}
+.ecard-ul li{font-size:10px;color:var(--sub);line-height:1.8;padding-left:14px;position:relative;font-weight:300;}
 .ecard-ul li::before{content:'▸';position:absolute;left:0;color:var(--green);font-size:8px;top:2px;}
 
-/* SKILLS bento */
-.skills-bento{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-.scard{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:22px;
-  transition:all 0.25s;
-}
-.scard:hover{background:var(--card2);border-color:var(--bord2);}
+/* ── SKILLS ── */
+.skills-bento{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.scard{padding:22px;}
 .scard-title{font-size:9px;color:var(--green);letter-spacing:0.2em;margin-bottom:14px;}
 .stags{display:flex;flex-wrap:wrap;gap:6px;}
 .sk{font-size:9px;color:var(--sub);border:1px solid var(--border);padding:4px 9px;border-radius:2px;transition:all 0.2s;background:var(--bg);}
-.sk:hover,.sk.on{color:var(--green);border-color:var(--dim);}
+.sk.on,.sk:hover{color:var(--green);border-color:var(--dim);}
 
-/* CONTACT bento */
-.contact-bento{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:10px;
-}
-.ccard{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:24px;
-  text-decoration:none;
-  transition:all 0.25s;
-  display:flex;flex-direction:column;justify-content:space-between;
-  min-height:120px;
-}
-.ccard:hover{background:var(--card2);border-color:var(--green);}
+/* ── CONTACT ── */
+.contact-bento{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.ccard{padding:24px;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;min-height:120px;}
 .ccard-label{font-size:9px;color:var(--muted);letter-spacing:0.2em;margin-bottom:auto;}
 .ccard-val{font-size:12px;color:var(--green);margin-top:16px;word-break:break-all;}
-.ccard-arrow{font-size:18px;color:var(--dim);text-align:right;margin-top:8px;transition:color 0.2s;}
-.ccard:hover .ccard-arrow{color:var(--green);}
-
-/* Terminal card */
-.term-card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:10px;
-  overflow:hidden;
-  grid-column:span 3;
-}
-.term-bar{
-  background:var(--card2);
-  padding:8px 14px;
-  display:flex;align-items:center;gap:6px;
-  border-bottom:1px solid var(--border);
-}
+.ccard-arrow{font-size:18px;color:var(--dim);text-align:right;margin-top:8px;transition:all 0.2s;}
+.ccard:hover .ccard-arrow{color:var(--green);transform:translateX(4px);}
+.term-card{grid-column:span 3;border-radius:10px;overflow:hidden;background:var(--card);border:1px solid var(--border);}
+.term-bar{background:var(--card2);padding:8px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border);}
 .dot{width:9px;height:9px;border-radius:50%;}
 .dr{background:#ff5f57;}.dy{background:#febc2e;}.dg{background:#28c840;}
-.term-body{
-  padding:16px 20px;
-  font-size:11px;line-height:2.2;color:var(--sub);
-  display:flex;gap:48px;flex-wrap:wrap;
-}
+.term-body{padding:16px 20px;font-size:11px;line-height:2.2;color:var(--sub);display:flex;gap:48px;flex-wrap:wrap;}
 .term-body .ps{color:var(--green);}
 .term-body .vl{color:var(--text);}
 .term-col{display:flex;flex-direction:column;}
 .blink{animation:bl 1s step-end infinite;color:var(--green);}
 @keyframes bl{50%{opacity:0;}}
 
-/* fade in */
-.fi{opacity:0;transform:translateY(16px);transition:opacity 0.5s ease,transform 0.5s ease;}
-.fi.vis{opacity:1;transform:none;}
-
-/* footer */
-footer{
-  border-top:1px solid var(--border);
-  padding:18px 40px;
-  display:flex;justify-content:space-between;
-  position:relative;z-index:1;
-  font-size:10px;color:var(--dim);letter-spacing:0.08em;
-}
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:18px 40px;display:flex;justify-content:space-between;position:relative;z-index:10;font-size:10px;color:var(--dim);letter-spacing:0.08em;}
 footer .g{color:var(--green);}
 
+/* ── ENTRANCE ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(28px) scale(0.97);transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1),transform 0.6s cubic-bezier(0.16,1,0.3,1);}
+.reveal.vis{opacity:1;transform:none;}
+.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1),transform 0.6s cubic-bezier(0.16,1,0.3,1);}
+.reveal-left.vis{opacity:1;transform:none;}
+.reveal-right{opacity:0;transform:translateX(28px);transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1),transform 0.6s cubic-bezier(0.16,1,0.3,1);}
+.reveal-right.vis{opacity:1;transform:none;}
+
+/* ── RESPONSIVE ── */
 @media(max-width:900px){
-  #hero{grid-template-columns:1fr;padding:80px 20px 40px;}
+  nav{padding:0 20px;}
+  .nav-links{display:none;}
+  section{padding:60px 20px;}
+  #hero{grid-template-columns:1fr;padding:80px 20px 60px;}
   .hero-right{display:none;}
-  .bento-section{padding:48px 20px;}
   .proj-bento,.exp-bento{grid-template-columns:1fr;}
   .pcard-wide{grid-column:span 1;}
   .skills-bento{grid-template-columns:1fr 1fr;}
   .contact-bento{grid-template-columns:1fr 1fr;}
   .term-card{grid-column:span 2;}
-  nav{padding:0 20px;}
-  .nav-links{display:none;}
-  footer{flex-direction:column;gap:4px;text-align:center;}
+  footer{flex-direction:column;gap:4px;text-align:center;padding:18px 20px;}
 }
 </style>
 </head>
 <body>
+
+<canvas id="matrix-canvas"></canvas>
 
 <nav>
   <div class="logo"><span>~/</span>gustavo-saud</div>
@@ -340,115 +217,95 @@ footer .g{color:var(--green);}
 <!-- HERO -->
 <section id="hero">
   <div class="hero-left">
-    <div class="hero-tag">Backend Dev & DevOps</div>
+    <div class="hero-tag reveal-left">Backend Dev & DevOps</div>
     <h1>
-      <div class="h1-solid">Gustavo</div>
-      <div class="h1-outline">Saud</div>
+      <div class="h1-solid reveal-left" style="transition-delay:0.05s">Gustavo</div>
+      <div class="h1-outline reveal-left" style="transition-delay:0.1s">Saud</div>
     </h1>
-    <p class="hero-sub">
-      Construo APIs robustas, automatizo pipelines e mantenho infraestrutura crítica em produção.<br>
+    <p class="hero-sub reveal-left" style="transition-delay:0.15s">
+      Construo APIs robustas, automatizo pipelines e<br>mantenho infraestrutura crítica em produção.<br>
       Contagem, MG — disponível para novas oportunidades.
     </p>
-    <div class="hero-btns">
+    <div class="hero-btns reveal-left" style="transition-delay:0.2s">
       <a href="#projects" class="btn btn-p">ver projetos</a>
       <a href="#contact" class="btn btn-g">contato</a>
     </div>
   </div>
 
   <div class="hero-right">
-    <!-- stat cards -->
-    <div class="hcard fi">
+    <div class="hcard reveal" style="transition-delay:0.1s">
       <div class="hcard-label">// experiência</div>
       <div class="hcard-val">2+</div>
       <div class="hcard-sub">anos em tecnologia</div>
     </div>
-    <div class="hcard fi">
+    <div class="hcard reveal" style="transition-delay:0.15s">
       <div class="hcard-label">// em produção</div>
       <div class="hcard-val">3</div>
       <div class="hcard-sub">projetos ativos</div>
     </div>
-    <div class="hcard fi">
+    <div class="hcard reveal" style="transition-delay:0.2s">
       <div class="hcard-label">// status</div>
-      <div class="hcard-sub" style="margin-top:8px;font-size:12px;">
-        <span class="status-dot"></span>disponível
-      </div>
+      <div class="hcard-sub" style="margin-top:8px;font-size:12px;"><span class="status-dot"></span>disponível</div>
     </div>
-    <div class="hcard fi">
+    <div class="hcard reveal" style="transition-delay:0.25s">
       <div class="hcard-label">// clouds</div>
       <div class="hcard-val">3</div>
       <div class="hcard-sub">AWS · Azure · Huawei</div>
     </div>
-    <div class="hcard fi" style="padding:0;overflow:hidden;border-radius:8px;">
-      <img src="https://img.lightshot.app/_V42VgLoQtuQbvGMOlxOuQ.png"
-           alt="Gustavo Saud"
+    <div class="hcard reveal" style="padding:0;overflow:hidden;border-radius:8px;transition-delay:0.3s">
+      <img src="https://img.lightshot.app/_V42VgLoQtuQbvGMOlxOuQ.png" alt="Gustavo Saud"
            style="width:100%;height:100%;min-height:160px;object-fit:cover;object-position:center top;display:block;filter:grayscale(20%) contrast(1.05);"/>
     </div>
-    <div class="hcard fi">
-      <div class="hcard-label">// stack principal</div>
+    <div class="hcard reveal" style="transition-delay:0.35s">
+      <div class="hcard-label">// stack</div>
       <div class="tech-list">
-        <span class="tech on">Python</span>
-        <span class="tech on">Django</span>
-        <span class="tech on">Docker</span>
-        <span class="tech">Linux</span>
-        <span class="tech">Zabbix</span>
-        <span class="tech">PostgreSQL</span>
-        <span class="tech">n8n</span>
-        <span class="tech">Traefik</span>
+        <span class="tech on">Python</span><span class="tech on">Django</span>
+        <span class="tech on">Docker</span><span class="tech">Linux</span>
+        <span class="tech">Zabbix</span><span class="tech">n8n</span>
       </div>
     </div>
   </div>
 </section>
 
 <!-- PROJECTS -->
-<section class="bento-section" id="projects">
-  <div class="bento-section-label">// projetos</div>
+<section style="padding:60px 40px;position:relative;z-index:10;" id="projects">
+  <div class="sec-label">// projetos</div>
   <div class="proj-bento">
-
-    <div class="pcard pcard-wide fi">
-      <div class="pcard-badge"><span class="status-dot" style="width:5px;height:5px;animation:pulse 2s infinite;"></span>EM PRODUÇÃO</div>
+    <div class="card-base pcard pcard-wide reveal">
+      <div class="pcard-badge"><span class="status-dot" style="width:5px;height:5px;"></span>EM PRODUÇÃO</div>
       <div class="pcard-num">01</div>
       <div class="pcard-name">Growth Ocean — CRM & ERP</div>
-      <div class="pcard-desc">Sistema completo para agência de marketing. Funil Kanban, financeiro, contratos em PDF, integração Google Calendar, cobranças via Asaas e portal do cliente.</div>
+      <div class="pcard-desc">Sistema completo para agência de marketing. Funil Kanban, financeiro, contratos em PDF, integração Google Calendar, cobranças via Asaas e portal do cliente em tempo real.</div>
       <div class="pcard-stack">
-        <span class="stag">Django 5.1</span><span class="stag">PostgreSQL 16</span>
-        <span class="stag">Docker</span><span class="stag">Railway</span><span class="stag">Asaas</span>
+        <span class="stag">Django 5.1</span><span class="stag">PostgreSQL 16</span><span class="stag">Docker</span><span class="stag">Railway</span><span class="stag">Asaas</span>
       </div>
     </div>
-
-    <div class="pcard fi">
-      <div class="pcard-badge"><span class="status-dot" style="width:5px;height:5px;animation:pulse 2s infinite;"></span>EM PRODUÇÃO</div>
+    <div class="card-base pcard reveal" style="transition-delay:0.05s">
+      <div class="pcard-badge"><span class="status-dot" style="width:5px;height:5px;"></span>EM PRODUÇÃO</div>
       <div class="pcard-num">02</div>
       <div class="pcard-name">Plataforma Multi-Cloud Billing</div>
       <div class="pcard-desc">Gestão de custos AWS, Azure e Huawei. Dashboards com Chart.js, pipelines via n8n, relatórios em PDF.</div>
       <div class="pcard-stack">
-        <span class="stag">Python</span><span class="stag">Django</span>
-        <span class="stag">Docker Swarm</span><span class="stag">n8n</span>
+        <span class="stag">Python</span><span class="stag">Django</span><span class="stag">Docker Swarm</span><span class="stag">n8n</span>
       </div>
     </div>
-
-    <div class="pcard fi">
+    <div class="card-base pcard reveal" style="transition-delay:0.1s">
       <div class="pcard-num">03</div>
       <div class="pcard-name">Saud Homelab</div>
       <div class="pcard-desc">Zabbix em VM Ubuntu via Hyper-V. Alertas automáticos via Telegram Bot API com múltiplos usuários e host groups.</div>
       <div class="pcard-stack">
-        <span class="stag">Zabbix</span><span class="stag">Python</span>
-        <span class="stag">Ubuntu Server</span><span class="stag">Docker</span>
+        <span class="stag">Zabbix</span><span class="stag">Python</span><span class="stag">Ubuntu Server</span><span class="stag">Docker</span>
       </div>
     </div>
-
   </div>
 </section>
 
 <!-- EXPERIENCE -->
-<section class="bento-section" id="experience">
-  <div class="bento-section-label">// experiência</div>
+<section style="padding:60px 40px;position:relative;z-index:10;" id="experience">
+  <div class="sec-label">// experiência</div>
   <div class="exp-bento">
-
-    <div class="ecard fi">
-      <div class="ecard-period">
-        Out/2025 – Atual
-        <span class="ecard-now">● ATUAL</span>
-      </div>
+    <div class="card-base ecard reveal">
+      <div class="ecard-period">Out/2025 – Atual <span class="ecard-now">● ATUAL</span></div>
       <div class="ecard-co">Prolinx</div>
       <div class="ecard-role">Analista de Monitoramento Jr. (NOC)</div>
       <ul class="ecard-ul">
@@ -457,8 +314,7 @@ footer .g{color:var(--green);}
         <li>VMware, Hyper-V e suporte técnico</li>
       </ul>
     </div>
-
-    <div class="ecard fi">
+    <div class="card-base ecard reveal" style="transition-delay:0.05s">
       <div class="ecard-period">Dez/2024 – Out/2025</div>
       <div class="ecard-co">Prolinx</div>
       <div class="ecard-role">Assistente de Suporte Técnico</div>
@@ -467,8 +323,7 @@ footer .g{color:var(--green);}
         <li>Firewall Sophos/pfSense · VPN site-to-site</li>
       </ul>
     </div>
-
-    <div class="ecard fi">
+    <div class="card-base ecard reveal" style="transition-delay:0.1s">
       <div class="ecard-period">Jun/2024 – Nov/2024</div>
       <div class="ecard-co">Siematec Informática</div>
       <div class="ecard-role">Analista de Suporte</div>
@@ -477,8 +332,7 @@ footer .g{color:var(--green);}
         <li>Análise SQL · Scripts corretivos</li>
       </ul>
     </div>
-
-    <div class="ecard fi">
+    <div class="card-base ecard reveal" style="transition-delay:0.15s">
       <div class="ecard-period">Out/2023 – Jul/2024</div>
       <div class="ecard-co">Space Telecom</div>
       <div class="ecard-role">Técnico de Suporte</div>
@@ -487,69 +341,28 @@ footer .g{color:var(--green);}
         <li>Monitoramento e análise de rede</li>
       </ul>
     </div>
-
   </div>
 </section>
 
 <!-- SKILLS -->
-<section class="bento-section" id="skills">
-  <div class="bento-section-label">// stack técnico</div>
+<section style="padding:60px 40px;position:relative;z-index:10;" id="skills">
+  <div class="sec-label">// stack técnico</div>
   <div class="skills-bento">
-    <div class="scard fi">
-      <div class="scard-title">// backend</div>
-      <div class="stags">
-        <span class="sk on">Python</span><span class="sk on">Django</span>
-        <span class="sk">Node.js</span><span class="sk">Flask</span>
-        <span class="sk">REST API</span>
-      </div>
-    </div>
-    <div class="scard fi">
-      <div class="scard-title">// devops</div>
-      <div class="stags">
-        <span class="sk on">Docker</span><span class="sk on">Docker Swarm</span>
-        <span class="sk">Traefik</span><span class="sk">Linux</span>
-        <span class="sk">Bash</span><span class="sk">n8n</span>
-      </div>
-    </div>
-    <div class="scard fi">
-      <div class="scard-title">// infra & cloud</div>
-      <div class="stags">
-        <span class="sk">VMware</span><span class="sk">Hyper-V</span>
-        <span class="sk">AWS</span><span class="sk">Azure</span>
-        <span class="sk">Huawei Cloud</span>
-      </div>
-    </div>
-    <div class="scard fi">
-      <div class="scard-title">// banco de dados</div>
-      <div class="stags">
-        <span class="sk on">PostgreSQL</span><span class="sk">MySQL</span><span class="sk">SQL</span>
-      </div>
-    </div>
-    <div class="scard fi">
-      <div class="scard-title">// monitoramento</div>
-      <div class="stags">
-        <span class="sk on">Zabbix</span><span class="sk">Telegram Bot</span><span class="sk">NOC 24x7</span>
-      </div>
-    </div>
-    <div class="scard fi">
-      <div class="scard-title">// redes & seg.</div>
-      <div class="stags">
-        <span class="sk">Sophos</span><span class="sk">pfSense</span>
-        <span class="sk">VPN</span><span class="sk">Firewall</span>
-      </div>
-    </div>
+    <div class="card-base scard reveal"><div class="scard-title">// backend</div><div class="stags"><span class="sk on">Python</span><span class="sk on">Django</span><span class="sk">Node.js</span><span class="sk">Flask</span><span class="sk">REST API</span></div></div>
+    <div class="card-base scard reveal" style="transition-delay:0.05s"><div class="scard-title">// devops</div><div class="stags"><span class="sk on">Docker</span><span class="sk on">Docker Swarm</span><span class="sk">Traefik</span><span class="sk">Linux</span><span class="sk">Bash</span><span class="sk">n8n</span></div></div>
+    <div class="card-base scard reveal" style="transition-delay:0.1s"><div class="scard-title">// infra & cloud</div><div class="stags"><span class="sk">VMware</span><span class="sk">Hyper-V</span><span class="sk">AWS</span><span class="sk">Azure</span><span class="sk">Huawei Cloud</span></div></div>
+    <div class="card-base scard reveal" style="transition-delay:0.15s"><div class="scard-title">// banco de dados</div><div class="stags"><span class="sk on">PostgreSQL</span><span class="sk">MySQL</span><span class="sk">SQL</span></div></div>
+    <div class="card-base scard reveal" style="transition-delay:0.2s"><div class="scard-title">// monitoramento</div><div class="stags"><span class="sk on">Zabbix</span><span class="sk">Telegram Bot</span><span class="sk">NOC 24x7</span></div></div>
+    <div class="card-base scard reveal" style="transition-delay:0.25s"><div class="scard-title">// redes & seg.</div><div class="stags"><span class="sk">Sophos</span><span class="sk">pfSense</span><span class="sk">VPN</span><span class="sk">Firewall</span></div></div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section class="bento-section" id="contact">
-  <div class="bento-section-label">// contato</div>
+<section style="padding:60px 40px;position:relative;z-index:10;" id="contact">
+  <div class="sec-label">// contato</div>
   <div class="contact-bento">
-
-    <div class="term-card fi">
-      <div class="term-bar">
-        <div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div>
-      </div>
+    <div class="term-card reveal">
+      <div class="term-bar"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div>
       <div class="term-body">
         <div class="term-col">
           <span><span class="ps">❯</span> whoami</span>
@@ -566,40 +379,11 @@ footer .g{color:var(--green);}
         </div>
       </div>
     </div>
-
-    <a href="/cdn-cgi/l/email-protection#81e6f4f2e0f4e5c1e9eef5ece0e8edafe2eeec" class="ccard fi">
-      <div class="ccard-label">// email</div>
-      <div class="ccard-val"><span class="__cf_email__" data-cfemail="0b6c7e786a7e6f4b63647f666a626725686466">[email&#160;protected]</span></div>
-      <div class="ccard-arrow">→</div>
-    </a>
-
-    <a href="https://linkedin.com/in/gustavosaud" target="_blank" class="ccard fi">
-      <div class="ccard-label">// linkedin</div>
-      <div class="ccard-val">linkedin.com/in/gustavosaud</div>
-      <div class="ccard-arrow">→</div>
-    </a>
-
-    <a href="https://github.com/robacenadev" target="_blank" class="ccard fi">
-      <div class="ccard-label">// github</div>
-      <div class="ccard-val">github.com/robacenadev</div>
-      <div class="ccard-arrow">→</div>
-    </a>
-
-    <a href="tel:+5531992109113" class="ccard fi">
-      <div class="ccard-label">// telefone</div>
-      <div class="ccard-val">(31) 99210-9113</div>
-      <div class="ccard-arrow">→</div>
-    </a>
-
-    <div class="ccard fi" style="border-color:rgba(80,250,123,0.2);cursor:default;">
-      <div class="ccard-label">// certs</div>
-      <div style="margin-top:auto;font-size:10px;color:var(--sub);line-height:1.9;">
-        Sophos FW Engineer<br>
-        Sophos Endpoint Eng.<br>
-        ADS — Estácio
-      </div>
-    </div>
-
+    <a href="mailto:gusaud@hotmail.com" class="card-base ccard reveal"><div class="ccard-label">// email</div><div class="ccard-val">gusaud@hotmail.com</div><div class="ccard-arrow">→</div></a>
+    <a href="https://linkedin.com/in/gustavosaud" target="_blank" class="card-base ccard reveal" style="transition-delay:0.05s"><div class="ccard-label">// linkedin</div><div class="ccard-val">linkedin.com/in/gustavosaud</div><div class="ccard-arrow">→</div></a>
+    <a href="https://github.com/robacenadev" target="_blank" class="card-base ccard reveal" style="transition-delay:0.1s"><div class="ccard-label">// github</div><div class="ccard-val">github.com/robacenadev</div><div class="ccard-arrow">→</div></a>
+    <a href="tel:+5531992109113" class="card-base ccard reveal" style="transition-delay:0.15s"><div class="ccard-label">// telefone</div><div class="ccard-val">(31) 99210-9113</div><div class="ccard-arrow">→</div></a>
+    <div class="card-base ccard reveal" style="transition-delay:0.2s;border-color:rgba(80,250,123,0.15);cursor:default;"><div class="ccard-label">// certs</div><div style="margin-top:auto;font-size:10px;color:var(--sub);line-height:1.9;">Sophos FW Engineer<br>Sophos Endpoint Eng.<br>ADS — Estácio</div></div>
   </div>
 </section>
 
@@ -609,18 +393,93 @@ footer .g{color:var(--green);}
 </footer>
 
 <script>
-// Hero cards: visible immediately on load
-document.querySelectorAll('#hero .fi').forEach((el, i) => {
-  setTimeout(() => el.classList.add('vis'), 100 + i * 80);
+// ── MATRIX RAIN ──
+const canvas = document.getElementById('matrix-canvas');
+const ctx = canvas.getContext('2d');
+const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ01アイウエオ'.split('');
+const devops = ['docker','nginx','python','linux','bash','git','ssh','vim','sudo','grep','curl','kubectl','zabbix','ansible','terraform','django','postgres','redis','n8n','aws','k8s','tcp','udp','ip','dns','ssl','tls','http','api','cron','pid','cpu','ram','disk','swap'].join('').split('');
+const allChars = [...chars, ...devops];
+let cols, drops;
+
+function initMatrix() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  cols = Math.floor(canvas.width / 18);
+  drops = Array(cols).fill(1).map(() => Math.random() * -100);
+}
+
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(2,10,5,0.05)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  drops.forEach((y, i) => {
+    const char = allChars[Math.floor(Math.random() * allChars.length)];
+    const brightness = Math.random();
+    if (brightness > 0.97) {
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 13px IBM Plex Mono';
+    } else if (brightness > 0.8) {
+      ctx.fillStyle = '#50fa7b';
+      ctx.font = '13px IBM Plex Mono';
+    } else {
+      ctx.fillStyle = `rgba(80,250,123,${0.15 + brightness * 0.25})`;
+      ctx.font = '13px IBM Plex Mono';
+    }
+    ctx.fillText(char, i * 18, y * 18);
+    if (y * 18 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    drops[i] += 0.4 + Math.random() * 0.3;
+  });
+}
+
+initMatrix();
+window.addEventListener('resize', initMatrix);
+setInterval(drawMatrix, 50);
+
+// ── FLOATING COMMANDS ──
+const cmds = [
+  'docker ps -a','git push origin main','zabbix_agentd -t','sudo systemctl restart nginx',
+  'kubectl get pods','ansible-playbook deploy.yml','ssh root@192.168.1.1','tail -f /var/log/syslog',
+  'python manage.py runserver','docker-compose up -d','grep -r "error" /var/log','htop',
+  'netstat -tlnp','iptables -L','df -h','free -m','journalctl -xe','crontab -e',
+  'pip install django','npm run build','terraform apply','curl -X POST /api/v1',
+  'pg_dump mydb > backup.sql','cat /etc/hosts','chmod 755 deploy.sh','./start.sh',
+];
+function spawnCmd() {
+  const el = document.createElement('div');
+  el.className = 'float-cmd';
+  el.textContent = cmds[Math.floor(Math.random() * cmds.length)];
+  el.style.left = Math.random() * 90 + '%';
+  el.style.bottom = '-20px';
+  el.style.animationDelay = '0s';
+  el.style.animationDuration = (10 + Math.random() * 8) + 's';
+  el.style.opacity = '0';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 20000);
+}
+setInterval(spawnCmd, 1800);
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const delay = parseFloat(el.style.transitionDelay || 0) * 1000;
+      setTimeout(() => el.classList.add('vis'), delay);
+      observer.unobserve(el);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+  observer.observe(el);
 });
 
-// Other sections: visible on scroll
-const obs = new IntersectionObserver(entries => {
-  entries.forEach((e, i) => {
-    if(e.isIntersecting) setTimeout(() => e.target.classList.add('vis'), i * 60);
+// Hero: trigger immediately
+setTimeout(() => {
+  document.querySelectorAll('#hero .reveal, #hero .reveal-left, #hero .reveal-right').forEach((el, i) => {
+    const base = parseFloat(el.style.transitionDelay || 0) * 1000;
+    setTimeout(() => el.classList.add('vis'), base);
   });
-}, {threshold: 0.07});
-document.querySelectorAll('.bento-section .fi').forEach(el => obs.observe(el));
+}, 100);
 </script>
 </body>
 </html>
