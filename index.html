@@ -123,7 +123,7 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 
 /* ── PROJECTS ── */
 .proj-bento{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.pcard{padding:28px;}
+.pcard{padding:28px;cursor:pointer;}
 .pcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--green);transform:scaleY(0);transform-origin:bottom;transition:transform 0.4s ease;}
 .pcard:hover::before{transform:scaleY(1);}
 .pcard-wide{grid-column:span 2;}
@@ -134,6 +134,37 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 .pcard-stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px;}
 .stag{font-size:9px;color:var(--muted);border:1px solid var(--border);background:var(--bg);padding:3px 8px;border-radius:2px;transition:all 0.2s;}
 .stag:hover{color:var(--green);border-color:var(--dim);}
+.pcard-hint{font-size:9px;color:var(--dim);margin-top:16px;letter-spacing:0.1em;display:flex;align-items:center;gap:6px;}
+.pcard-hint::before{content:'';flex:1;height:1px;background:var(--border);}
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(2,10,5,0.88);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease;padding:20px;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--card);border:1px solid var(--bord2);border-radius:12px;width:100%;max-width:680px;max-height:88vh;overflow-y:auto;transform:translateY(24px) scale(0.97);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);position:relative;}
+.modal-overlay.open .modal{transform:none;}
+.modal-header{padding:28px 32px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;position:sticky;top:0;background:var(--card);z-index:1;border-radius:12px 12px 0 0;}
+.modal-close{background:none;border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:4px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;font-family:'IBM Plex Mono',monospace;}
+.modal-close:hover{border-color:var(--green);color:var(--green);}
+.modal-body{padding:28px 32px 32px;}
+.modal-badge{display:inline-flex;align-items:center;gap:6px;font-size:9px;color:var(--green);background:rgba(80,250,123,0.07);border:1px solid rgba(80,250,123,0.15);padding:4px 10px;border-radius:2px;margin-bottom:12px;letter-spacing:0.12em;}
+.modal-title{font-size:22px;font-weight:600;color:var(--text);line-height:1.2;}
+.modal-sub{font-size:10px;color:var(--muted);letter-spacing:0.15em;margin-top:6px;}
+.modal-section{margin-top:24px;}
+.modal-section-title{font-size:9px;color:var(--green);letter-spacing:0.2em;margin-bottom:10px;}
+.modal-text{font-size:11px;color:var(--sub);line-height:2;font-weight:300;}
+.modal-features{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.modal-features li{font-size:11px;color:var(--sub);line-height:1.7;padding-left:16px;position:relative;font-weight:300;}
+.modal-features li::before{content:'▸';position:absolute;left:0;color:var(--green);font-size:9px;top:1px;}
+.modal-stack{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;}
+.modal-stag{font-size:10px;color:var(--green);border:1px solid rgba(80,250,123,0.2);background:rgba(80,250,123,0.05);padding:5px 12px;border-radius:3px;}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px;padding-top:24px;border-top:1px solid var(--border);}
+.modal-btn{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;padding:10px 20px;border-radius:3px;text-decoration:none;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;}
+.modal-btn-p{background:var(--green);color:var(--bg);font-weight:600;border:1px solid var(--green);}
+.modal-btn-p:hover{background:transparent;color:var(--green);}
+.modal-btn-g{border:1px solid var(--bord2);color:var(--sub);}
+.modal-btn-g:hover{border-color:var(--green);color:var(--green);}
+.modal-confidential{display:flex;align-items:flex-start;gap:12px;background:rgba(80,250,123,0.04);border:1px solid rgba(80,250,123,0.12);border-radius:6px;padding:16px;margin-top:20px;}
+.modal-confidential-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.modal-confidential-text{font-size:10px;color:var(--muted);line-height:1.8;}
 
 /* ── EXPERIENCE ── */
 .exp-bento{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
@@ -267,36 +298,54 @@ footer .g{color:var(--green);}
   </div>
 </section>
 
+<!-- MODAL OVERLAY -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div id="modal-header-content"></div>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
 <!-- PROJECTS -->
 <section style="padding:60px 40px;position:relative;z-index:10;" id="projects">
   <div class="sec-label">// projetos</div>
   <div class="proj-bento">
-    <div class="card-base pcard pcard-wide reveal">
+
+    <div class="card-base pcard pcard-wide reveal" onclick="openModal('growth')">
       <div class="pcard-badge"><span class="status-dot" style="width:5px;height:5px;"></span>EM PRODUÇÃO</div>
       <div class="pcard-num">01</div>
       <div class="pcard-name">Growth Ocean — CRM & ERP</div>
-      <div class="pcard-desc">Sistema completo para agência de marketing. Funil Kanban, financeiro, contratos em PDF, integração Google Calendar, cobranças via Asaas e portal do cliente em tempo real.</div>
+      <div class="pcard-desc">Sistema completo de gestão para agência de marketing digital. Do funil de captação até a entrega do projeto, tudo em uma plataforma.</div>
       <div class="pcard-stack">
         <span class="stag">Django 5.1</span><span class="stag">PostgreSQL 16</span><span class="stag">Docker</span><span class="stag">Railway</span><span class="stag">Asaas</span>
       </div>
+      <div class="pcard-hint">clique para ver detalhes →</div>
     </div>
-    <div class="card-base pcard reveal" style="transition-delay:0.05s">
+
+    <div class="card-base pcard reveal" style="transition-delay:0.05s" onclick="openModal('billing')">
       <div class="pcard-badge"><span class="status-dot" style="width:5px;height:5px;"></span>EM PRODUÇÃO</div>
       <div class="pcard-num">02</div>
       <div class="pcard-name">Plataforma Multi-Cloud Billing</div>
-      <div class="pcard-desc">Gestão de custos AWS, Azure e Huawei. Dashboards com Chart.js, pipelines via n8n, relatórios em PDF.</div>
+      <div class="pcard-desc">Gestão centralizada de custos AWS, Azure e Huawei para empresa de cibersegurança e infraestrutura.</div>
       <div class="pcard-stack">
         <span class="stag">Python</span><span class="stag">Django</span><span class="stag">Docker Swarm</span><span class="stag">n8n</span>
       </div>
+      <div class="pcard-hint">clique para ver detalhes →</div>
     </div>
-    <div class="card-base pcard reveal" style="transition-delay:0.1s">
+
+    <div class="card-base pcard reveal" style="transition-delay:0.1s" onclick="openModal('homelab')">
       <div class="pcard-num">03</div>
       <div class="pcard-name">Saud Homelab</div>
-      <div class="pcard-desc">Zabbix em VM Ubuntu via Hyper-V. Alertas automáticos via Telegram Bot API com múltiplos usuários e host groups.</div>
+      <div class="pcard-desc">Ambiente pessoal de monitoramento com Zabbix e alertas automáticos via Telegram Bot API.</div>
       <div class="pcard-stack">
         <span class="stag">Zabbix</span><span class="stag">Python</span><span class="stag">Ubuntu Server</span><span class="stag">Docker</span>
       </div>
+      <div class="pcard-hint">clique para ver detalhes →</div>
     </div>
+
   </div>
 </section>
 
@@ -480,6 +529,117 @@ setTimeout(() => {
     setTimeout(() => el.classList.add('vis'), base);
   });
 }, 100);
+
+// ── MODAL DATA ──
+const projects = {
+  growth: {
+    badge: '● EM PRODUÇÃO · CRM & ERP',
+    title: 'Growth Ocean',
+    sub: 'AGÊNCIA DE MARKETING DIGITAL · MAR/2026 – ATUAL',
+    about: 'Sistema web de gestão interna completo, construído do zero para a Easy Drop, agência de marketing digital. Centraliza toda a operação da empresa em uma única plataforma integrada — do primeiro contato com o cliente até a entrega final do projeto.',
+    features: [
+      'Funil de captação visual estilo Kanban — do lead ao cliente fechado',
+      'Módulo financeiro com controle de receitas, despesas e recorrências',
+      'Geração automática de contratos em PDF após aprovação de orçamento',
+      'Integração com Google Calendar para agendamentos e reuniões',
+      'Cobranças automáticas via Asaas — PIX, boleto e cartão',
+      'Portal do cliente para acompanhamento do projeto em tempo real',
+      'Notificações automáticas via WhatsApp integrado',
+      'Cadastro público com proteção anti-bot (honeypot)',
+    ],
+    stack: ['Django 5.1','Django REST Framework','PostgreSQL 16','Docker','Railway','Asaas API','Google Calendar API','JavaScript'],
+    actions: `<a href="https://ocean.easydropdigital.com.br/" target="_blank" class="modal-btn modal-btn-p">🌐 ver ao vivo</a>`,
+  },
+  billing: {
+    badge: '● EM PRODUÇÃO · CORPORATIVO',
+    title: 'Plataforma Multi-Cloud Billing',
+    sub: 'EMPRESA DE CIBERSEGURANÇA E INFRAESTRUTURA · DEZ/2025 – ATUAL',
+    about: 'Plataforma web corporativa multi-tenant para consolidação, análise e gestão de custos em ambientes AWS, Azure e Huawei Cloud. Assumi o projeto após saída do desenvolvedor anterior, atuando em toda a stack: refatoração de código legado, criação de pipelines, dashboards e infraestrutura.',
+    features: [
+      'Consolidação de billing de 3 clouds em uma única interface',
+      'Pipelines de ingestão automática de dados via n8n',
+      'Dashboards interativos com Chart.js por cliente e por serviço',
+      'Exportação automatizada de relatórios em PDF',
+      'Arquitetura multi-tenant com segregação de dados por cliente',
+      'Deploy em Docker Swarm com Traefik como reverse proxy',
+      'Refatoração de código legado e otimização de queries MySQL',
+    ],
+    stack: ['Python','Django','MySQL','n8n','Docker Swarm','Traefik','JavaScript','Chart.js'],
+    confidential: true,
+    actions: '',
+  },
+  homelab: {
+    badge: 'PROJETO PESSOAL · INFRA & MONITORAMENTO',
+    title: 'Saud Homelab',
+    sub: 'LABORATÓRIO PESSOAL DE INFRAESTRUTURA',
+    about: 'Ambiente pessoal de infraestrutura montado para estudos, testes e aprendizado de novas tecnologias. Foco em monitoramento, automação e virtualização.',
+    features: [
+      'Zabbix Server rodando em VM Ubuntu 22.04 via Hyper-V',
+      'Monitoramento de hosts, triggers e alertas configurados do zero',
+      'Script Python para envio de alertas via Telegram Bot API',
+      'Suporte a múltiplos usuários e host groups no bot do Telegram',
+      'Containerização de serviços auxiliares com Docker',
+      'Documentação completa de toda a infraestrutura no repositório',
+    ],
+    stack: ['Zabbix','Ubuntu Server 22.04','Python','Telegram Bot API','Hyper-V','Docker','MySQL','Bash'],
+    actions: `<a href="https://github.com/robacenadev/saud-homelab" target="_blank" class="modal-btn modal-btn-g">⌥ ver no GitHub</a>`,
+  },
+};
+
+function openModal(id) {
+  const p = projects[id];
+  const overlay = document.getElementById('modal-overlay');
+
+  document.getElementById('modal-header-content').innerHTML = `
+    <div>
+      <div class="modal-badge">${p.badge}</div>
+      <div class="modal-title">${p.title}</div>
+      <div class="modal-sub">${p.sub}</div>
+    </div>`;
+
+  let body = `
+    <div class="modal-section">
+      <div class="modal-section-title">// sobre o projeto</div>
+      <div class="modal-text">${p.about}</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">// funcionalidades</div>
+      <ul class="modal-features">${p.features.map(f => `<li>${f}</li>`).join('')}</ul>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">// stack técnico</div>
+      <div class="modal-stack">${p.stack.map(s => `<span class="modal-stag">${s}</span>`).join('')}</div>
+    </div>`;
+
+  if (p.confidential) {
+    body += `
+    <div class="modal-confidential">
+      <div class="modal-confidential-icon">🔒</div>
+      <div class="modal-confidential-text">
+        Este projeto é de uso interno corporativo. Por questões de <strong style="color:var(--green)">LGPD e confidencialidade</strong>, o código-fonte e a URL de acesso não são divulgados publicamente. O projeto está em produção ativa e sob manutenção contínua.
+      </div>
+    </div>`;
+  }
+
+  if (p.actions) {
+    body += `<div class="modal-actions">${p.actions}</div>`;
+  }
+
+  document.getElementById('modal-body').innerHTML = body;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeModal();
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 </script>
 </body>
 </html>
