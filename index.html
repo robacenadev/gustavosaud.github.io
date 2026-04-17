@@ -21,56 +21,21 @@ html{scroll-behavior:smooth;}
   --sub:#4a7a5e;
 }
 body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospace;overflow-x:hidden;}
-
-/* ── MATRIX CANVAS ── */
 #matrix-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.18;pointer-events:none;}
+.float-cmd{position:fixed;font-size:10px;color:var(--green);opacity:0;pointer-events:none;z-index:1;white-space:nowrap;font-family:'IBM Plex Mono',monospace;letter-spacing:0.05em;animation:floatup 12s linear infinite;}
+@keyframes floatup{0%{opacity:0;transform:translateY(0);}5%{opacity:0.25;}90%{opacity:0.1;}100%{opacity:0;transform:translateY(-100vh);}}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.06) 3px,rgba(0,0,0,0.06) 4px);pointer-events:none;z-index:2;}
 
-/* ── FLOATING COMMANDS ── */
-.float-cmd{
-  position:fixed;font-size:10px;color:var(--green);
-  opacity:0;pointer-events:none;z-index:1;white-space:nowrap;
-  font-family:'IBM Plex Mono',monospace;letter-spacing:0.05em;
-  animation:floatup 12s linear infinite;
-}
-@keyframes floatup{
-  0%{opacity:0;transform:translateY(0);}
-  5%{opacity:0.25;}
-  90%{opacity:0.1;}
-  100%{opacity:0;transform:translateY(-100vh);}
-}
-
-/* ── SCANLINE ── */
-body::after{
-  content:'';position:fixed;inset:0;
-  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.06) 3px,rgba(0,0,0,0.06) 4px);
-  pointer-events:none;z-index:2;
-}
-
-/* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:300;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 40px;height:48px;
-  background:rgba(2,10,5,0.92);
-  border-bottom:1px solid var(--border);
-  backdrop-filter:blur(20px);
-}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:48px;background:rgba(2,10,5,0.92);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);}
 .logo{font-size:12px;font-weight:600;color:var(--green);letter-spacing:0.05em;}
 .logo span{color:var(--muted);}
 .nav-links{display:flex;gap:24px;list-style:none;}
 .nav-links a{font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:0.12em;transition:color 0.2s;}
 .nav-links a:hover{color:var(--green);}
 
-/* ── SECTIONS ── */
-section{position:relative;z-index:10;padding:96px 40px;}
-
-/* ── HERO ── */
-#hero{
-  min-height:100vh;
-  display:grid;grid-template-columns:1fr 1fr;
-  align-items:center;
-  padding:80px 40px 40px;gap:40px;
-}
+/* HERO */
+#hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:80px 40px 40px;position:relative;z-index:10;gap:40px;}
 .hero-tag{font-size:10px;color:var(--muted);letter-spacing:0.25em;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
 .hero-tag::before{content:'';width:24px;height:1px;background:var(--green);}
 h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing:-0.03em;margin-bottom:24px;}
@@ -80,48 +45,37 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 .hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
 .btn{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;padding:11px 22px;border-radius:3px;text-decoration:none;transition:all 0.25s;display:inline-block;}
 .btn-p{background:var(--green);color:var(--bg);font-weight:600;border:1px solid var(--green);}
-.btn-p:hover{background:transparent;color:var(--green);box-shadow:0 0 20px rgba(80,250,123,0.2);}
+.btn-p:hover{background:transparent;color:var(--green);}
 .btn-g{border:1px solid var(--bord2);color:var(--sub);}
 .btn-g:hover{border-color:var(--green);color:var(--green);}
 
-/* hero right grid */
+/* HERO RIGHT */
 .hero-right{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.hcard{
-  background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;
-  position:relative;overflow:hidden;
-  transition:border-color 0.3s,background 0.3s,transform 0.3s,box-shadow 0.3s;
-}
+.hcard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;position:relative;overflow:hidden;transition:border-color 0.3s,background 0.3s,transform 0.3s,box-shadow 0.3s;}
 .hcard:hover{border-color:var(--bord2);background:var(--card2);transform:translateY(-3px);box-shadow:0 8px 32px rgba(80,250,123,0.06);}
 .hcard::before{content:'';position:absolute;inset:0;border-radius:8px;background:radial-gradient(circle at 50% 0%,rgba(80,250,123,0.05),transparent 70%);opacity:0;transition:opacity 0.3s;}
 .hcard:hover::before{opacity:1;}
 .hcard-label{font-size:9px;color:var(--muted);letter-spacing:0.2em;margin-bottom:10px;}
 .hcard-val{font-size:22px;font-weight:600;color:var(--green);letter-spacing:-0.02em;}
 .hcard-sub{font-size:10px;color:var(--sub);margin-top:4px;}
-.hcard-span2{grid-column:span 2;}
 .status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:6px;animation:pulse-dot 2s ease-in-out infinite;}
 @keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(80,250,123,0.5);}50%{box-shadow:0 0 0 6px rgba(80,250,123,0);}}
 .tech-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
 .tech{font-size:9px;color:var(--muted);border:1px solid var(--border);padding:3px 8px;border-radius:2px;transition:all 0.2s;}
 .tech.on,.tech:hover{color:var(--green);border-color:var(--dim);}
 
-/* ── SECTION LABEL ── */
-.sec-label{
-  font-size:10px;color:var(--muted);letter-spacing:0.25em;
-  margin-bottom:28px;display:flex;align-items:center;gap:10px;
-}
+/* SECTION */
+.bsec{padding:60px 40px;position:relative;z-index:10;}
+.sec-label{font-size:10px;color:var(--muted);letter-spacing:0.25em;margin-bottom:28px;display:flex;align-items:center;gap:10px;}
 .sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
 
-/* ── CARD BASE ── */
-.card-base{
-  background:var(--card);border:1px solid var(--border);border-radius:10px;
-  transition:background 0.3s,border-color 0.3s,transform 0.3s,box-shadow 0.3s;
-  position:relative;overflow:hidden;
-}
-.card-base:hover{background:var(--card2);border-color:var(--bord2);transform:translateY(-4px);box-shadow:0 12px 40px rgba(80,250,123,0.07);}
-.card-base::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent);transform:scaleX(0);transition:transform 0.4s ease;}
-.card-base:hover::after{transform:scaleX(1);}
+/* CARD BASE */
+.cb{background:var(--card);border:1px solid var(--border);border-radius:10px;transition:background 0.3s,border-color 0.3s,transform 0.3s,box-shadow 0.3s;position:relative;overflow:hidden;}
+.cb:hover{background:var(--card2);border-color:var(--bord2);transform:translateY(-4px);box-shadow:0 12px 40px rgba(80,250,123,0.07);}
+.cb::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent);transform:scaleX(0);transition:transform 0.4s ease;}
+.cb:hover::after{transform:scaleX(1);}
 
-/* ── PROJECTS ── */
+/* PROJECTS */
 .proj-bento{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .pcard{padding:28px;cursor:pointer;}
 .pcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--green);transform:scaleY(0);transform-origin:bottom;transition:transform 0.4s ease;}
@@ -136,37 +90,8 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 .stag:hover{color:var(--green);border-color:var(--dim);}
 .pcard-hint{font-size:9px;color:var(--dim);margin-top:16px;letter-spacing:0.1em;display:flex;align-items:center;gap:6px;}
 .pcard-hint::before{content:'';flex:1;height:1px;background:var(--border);}
-/* ── MODAL ── */
-.modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(2,10,5,0.88);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease;padding:20px;}
-.modal-overlay.open{opacity:1;pointer-events:all;}
-.modal{background:var(--card);border:1px solid var(--bord2);border-radius:12px;width:100%;max-width:680px;max-height:88vh;overflow-y:auto;transform:translateY(24px) scale(0.97);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);position:relative;}
-.modal-overlay.open .modal{transform:none;}
-.modal-header{padding:28px 32px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;position:sticky;top:0;background:var(--card);z-index:1;border-radius:12px 12px 0 0;}
-.modal-close{background:none;border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:4px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;font-family:'IBM Plex Mono',monospace;}
-.modal-close:hover{border-color:var(--green);color:var(--green);}
-.modal-body{padding:28px 32px 32px;}
-.modal-badge{display:inline-flex;align-items:center;gap:6px;font-size:9px;color:var(--green);background:rgba(80,250,123,0.07);border:1px solid rgba(80,250,123,0.15);padding:4px 10px;border-radius:2px;margin-bottom:12px;letter-spacing:0.12em;}
-.modal-title{font-size:22px;font-weight:600;color:var(--text);line-height:1.2;}
-.modal-sub{font-size:10px;color:var(--muted);letter-spacing:0.15em;margin-top:6px;}
-.modal-section{margin-top:24px;}
-.modal-section-title{font-size:9px;color:var(--green);letter-spacing:0.2em;margin-bottom:10px;}
-.modal-text{font-size:11px;color:var(--sub);line-height:2;font-weight:300;}
-.modal-features{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:4px;}
-.modal-features li{font-size:11px;color:var(--sub);line-height:1.7;padding-left:16px;position:relative;font-weight:300;}
-.modal-features li::before{content:'▸';position:absolute;left:0;color:var(--green);font-size:9px;top:1px;}
-.modal-stack{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;}
-.modal-stag{font-size:10px;color:var(--green);border:1px solid rgba(80,250,123,0.2);background:rgba(80,250,123,0.05);padding:5px 12px;border-radius:3px;}
-.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px;padding-top:24px;border-top:1px solid var(--border);}
-.modal-btn{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;padding:10px 20px;border-radius:3px;text-decoration:none;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;}
-.modal-btn-p{background:var(--green);color:var(--bg);font-weight:600;border:1px solid var(--green);}
-.modal-btn-p:hover{background:transparent;color:var(--green);}
-.modal-btn-g{border:1px solid var(--bord2);color:var(--sub);}
-.modal-btn-g:hover{border-color:var(--green);color:var(--green);}
-.modal-confidential{display:flex;align-items:flex-start;gap:12px;background:rgba(80,250,123,0.04);border:1px solid rgba(80,250,123,0.12);border-radius:6px;padding:16px;margin-top:20px;}
-.modal-confidential-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
-.modal-confidential-text{font-size:10px;color:var(--muted);line-height:1.8;}
 
-/* ── EXPERIENCE ── */
+/* EXPERIENCE */
 .exp-bento{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .ecard{padding:26px;}
 .ecard-period{font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
@@ -177,7 +102,7 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 .ecard-ul li{font-size:10px;color:var(--sub);line-height:1.8;padding-left:14px;position:relative;font-weight:300;}
 .ecard-ul li::before{content:'▸';position:absolute;left:0;color:var(--green);font-size:8px;top:2px;}
 
-/* ── SKILLS ── */
+/* SKILLS */
 .skills-bento{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
 .scard{padding:22px;}
 .scard-title{font-size:9px;color:var(--green);letter-spacing:0.2em;margin-bottom:14px;}
@@ -185,10 +110,10 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 .sk{font-size:9px;color:var(--sub);border:1px solid var(--border);padding:4px 9px;border-radius:2px;transition:all 0.2s;background:var(--bg);}
 .sk.on,.sk:hover{color:var(--green);border-color:var(--dim);}
 
-/* ── CONTACT ── */
+/* CONTACT */
 .contact-bento{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
 .ccard{padding:24px;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;min-height:120px;}
-.ccard-label{font-size:9px;color:var(--muted);letter-spacing:0.2em;margin-bottom:auto;}
+.ccard-label{font-size:9px;color:var(--muted);letter-spacing:0.2em;}
 .ccard-val{font-size:12px;color:var(--green);margin-top:16px;word-break:break-all;}
 .ccard-arrow{font-size:18px;color:var(--dim);text-align:right;margin-top:8px;transition:all 0.2s;}
 .ccard:hover .ccard-arrow{color:var(--green);transform:translateX(4px);}
@@ -203,37 +128,134 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 .blink{animation:bl 1s step-end infinite;color:var(--green);}
 @keyframes bl{50%{opacity:0;}}
 
-/* ── FOOTER ── */
+/* ── MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,0.92);
+  backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.3s ease;
+  padding:20px;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{
+  background:#060d08;
+  border:1px solid #1c3824;
+  border-radius:12px;
+  width:100%;max-width:700px;
+  max-height:88vh;overflow-y:auto;
+  transform:translateY(28px) scale(0.96);
+  transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  position:relative;
+  scrollbar-width:thin;
+  scrollbar-color:#1a3a22 transparent;
+}
+.modal::-webkit-scrollbar{width:4px;}
+.modal::-webkit-scrollbar-track{background:transparent;}
+.modal::-webkit-scrollbar-thumb{background:#1a3a22;border-radius:2px;}
+.modal-overlay.open .modal{transform:none;}
+.modal-header{
+  padding:32px 36px 24px;
+  border-bottom:1px solid #0e1e12;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+  position:sticky;top:0;background:#060d08;z-index:1;border-radius:12px 12px 0 0;
+}
+.modal-close{
+  background:none;border:1px solid #1a3a22;color:#2d6642;
+  width:34px;height:34px;border-radius:4px;cursor:pointer;
+  font-size:14px;display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;flex-shrink:0;font-family:'IBM Plex Mono',monospace;
+  line-height:1;
+}
+.modal-close:hover{border-color:var(--green);color:var(--green);}
+.modal-body{padding:32px 36px 36px;}
+.modal-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:9px;color:var(--green);
+  background:rgba(80,250,123,0.07);border:1px solid rgba(80,250,123,0.2);
+  padding:5px 12px;border-radius:2px;margin-bottom:14px;letter-spacing:0.15em;
+}
+.modal-title{font-size:24px;font-weight:600;color:#ffffff;line-height:1.2;margin-bottom:6px;}
+.modal-sub{font-size:10px;color:#2d6642;letter-spacing:0.18em;}
+.modal-divider{height:1px;background:#0e1e12;margin:24px 0;}
+.modal-section-title{
+  font-size:9px;color:var(--green);letter-spacing:0.25em;
+  margin-bottom:12px;display:flex;align-items:center;gap:10px;
+}
+.modal-section-title::after{content:'';flex:1;height:1px;background:#0e1e12;}
+.modal-text{font-size:13px;color:#a8c4b0;line-height:1.9;font-weight:300;}
+.modal-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:4px;}
+.modal-features li{
+  font-size:13px;color:#a8c4b0;
+  line-height:1.7;padding-left:18px;
+  position:relative;font-weight:300;
+}
+.modal-features li::before{content:'▸';position:absolute;left:0;color:var(--green);font-size:10px;top:2px;}
+.modal-stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+.modal-stag{
+  font-size:11px;color:var(--green);
+  border:1px solid rgba(80,250,123,0.2);
+  background:rgba(80,250,123,0.05);
+  padding:6px 14px;border-radius:3px;
+  letter-spacing:0.04em;
+}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px;padding-top:24px;border-top:1px solid #0e1e12;}
+.modal-btn{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;
+  padding:11px 22px;border-radius:3px;text-decoration:none;
+  transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;
+}
+.modal-btn-p{background:var(--green);color:#020a05;font-weight:600;border:1px solid var(--green);}
+.modal-btn-p:hover{background:transparent;color:var(--green);}
+.modal-btn-g{border:1px solid #1c3824;color:#4a7a5e;}
+.modal-btn-g:hover{border-color:var(--green);color:var(--green);}
+.modal-lock{
+  display:flex;align-items:flex-start;gap:14px;
+  background:rgba(80,250,123,0.03);
+  border:1px solid rgba(80,250,123,0.1);
+  border-radius:6px;padding:18px;margin-top:24px;
+}
+.modal-lock-icon{font-size:18px;flex-shrink:0;}
+.modal-lock-text{font-size:12px;color:#5a8a6a;line-height:1.9;}
+.modal-lock-text strong{color:var(--green);font-weight:500;}
+
+/* FOOTER */
 footer{border-top:1px solid var(--border);padding:18px 40px;display:flex;justify-content:space-between;position:relative;z-index:10;font-size:10px;color:var(--dim);letter-spacing:0.08em;}
 footer .g{color:var(--green);}
 
-/* ── ENTRANCE ANIMATIONS ── */
+/* REVEAL */
 .reveal{opacity:0;transform:translateY(28px) scale(0.97);transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1),transform 0.6s cubic-bezier(0.16,1,0.3,1);}
 .reveal.vis{opacity:1;transform:none;}
 .reveal-left{opacity:0;transform:translateX(-28px);transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1),transform 0.6s cubic-bezier(0.16,1,0.3,1);}
 .reveal-left.vis{opacity:1;transform:none;}
-.reveal-right{opacity:0;transform:translateX(28px);transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1),transform 0.6s cubic-bezier(0.16,1,0.3,1);}
-.reveal-right.vis{opacity:1;transform:none;}
 
-/* ── RESPONSIVE ── */
 @media(max-width:900px){
-  nav{padding:0 20px;}
-  .nav-links{display:none;}
-  section{padding:60px 20px;}
-  #hero{grid-template-columns:1fr;padding:80px 20px 60px;}
-  .hero-right{display:none;}
-  .proj-bento,.exp-bento{grid-template-columns:1fr;}
-  .pcard-wide{grid-column:span 1;}
+  nav{padding:0 20px;}.nav-links{display:none;}
+  .bsec{padding:48px 20px;}
+  #hero{grid-template-columns:1fr;padding:80px 20px 60px;}.hero-right{display:none;}
+  .proj-bento,.exp-bento{grid-template-columns:1fr;}.pcard-wide{grid-column:span 1;}
   .skills-bento{grid-template-columns:1fr 1fr;}
-  .contact-bento{grid-template-columns:1fr 1fr;}
-  .term-card{grid-column:span 2;}
+  .contact-bento{grid-template-columns:1fr 1fr;}.term-card{grid-column:span 2;}
   footer{flex-direction:column;gap:4px;text-align:center;padding:18px 20px;}
+  .modal-header,.modal-body{padding:24px 20px;}
 }
 </style>
 </head>
 <body>
 
 <canvas id="matrix-canvas"></canvas>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div id="modal-header-content"></div>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
 
 <nav>
   <div class="logo"><span>~/</span>gustavo-saud</div>
@@ -262,87 +284,46 @@ footer .g{color:var(--green);}
       <a href="#contact" class="btn btn-g">contato</a>
     </div>
   </div>
-
   <div class="hero-right">
-    <div class="hcard reveal" style="transition-delay:0.1s">
-      <div class="hcard-label">// experiência</div>
-      <div class="hcard-val">2+</div>
-      <div class="hcard-sub">anos em tecnologia</div>
-    </div>
-    <div class="hcard reveal" style="transition-delay:0.15s">
-      <div class="hcard-label">// em produção</div>
-      <div class="hcard-val">3</div>
-      <div class="hcard-sub">projetos ativos</div>
-    </div>
-    <div class="hcard reveal" style="transition-delay:0.2s">
-      <div class="hcard-label">// status</div>
-      <div class="hcard-sub" style="margin-top:8px;font-size:12px;"><span class="status-dot"></span>disponível</div>
-    </div>
-    <div class="hcard reveal" style="transition-delay:0.25s">
-      <div class="hcard-label">// clouds</div>
-      <div class="hcard-val">3</div>
-      <div class="hcard-sub">AWS · Azure · Huawei</div>
-    </div>
+    <div class="hcard reveal" style="transition-delay:0.1s"><div class="hcard-label">// experiência</div><div class="hcard-val">2+</div><div class="hcard-sub">anos em tecnologia</div></div>
+    <div class="hcard reveal" style="transition-delay:0.15s"><div class="hcard-label">// em produção</div><div class="hcard-val">3</div><div class="hcard-sub">projetos ativos</div></div>
+    <div class="hcard reveal" style="transition-delay:0.2s"><div class="hcard-label">// status</div><div class="hcard-sub" style="margin-top:8px;font-size:12px;"><span class="status-dot"></span>disponível</div></div>
+    <div class="hcard reveal" style="transition-delay:0.25s"><div class="hcard-label">// clouds</div><div class="hcard-val">3</div><div class="hcard-sub">AWS · Azure · Huawei</div></div>
     <div class="hcard reveal" style="padding:0;overflow:hidden;border-radius:8px;transition-delay:0.3s">
-      <img src="https://img.lightshot.app/_V42VgLoQtuQbvGMOlxOuQ.png" alt="Gustavo Saud"
-           style="width:100%;height:100%;min-height:160px;object-fit:cover;object-position:center top;display:block;filter:grayscale(20%) contrast(1.05);"/>
+      <img src="https://img.lightshot.app/_V42VgLoQtuQbvGMOlxOuQ.png" alt="Gustavo Saud" style="width:100%;height:100%;min-height:160px;object-fit:cover;object-position:center top;display:block;filter:grayscale(20%) contrast(1.05);"/>
     </div>
-    <div class="hcard reveal" style="transition-delay:0.35s">
-      <div class="hcard-label">// stack</div>
-      <div class="tech-list">
-        <span class="tech on">Python</span><span class="tech on">Django</span>
-        <span class="tech on">Docker</span><span class="tech">Linux</span>
-        <span class="tech">Zabbix</span><span class="tech">n8n</span>
-      </div>
-    </div>
+    <div class="hcard reveal" style="transition-delay:0.35s"><div class="hcard-label">// stack</div><div class="tech-list"><span class="tech on">Python</span><span class="tech on">Django</span><span class="tech on">Docker</span><span class="tech">Linux</span><span class="tech">Zabbix</span><span class="tech">n8n</span></div></div>
   </div>
 </section>
 
-<!-- MODAL OVERLAY -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal" id="modal">
-    <div class="modal-header">
-      <div id="modal-header-content"></div>
-      <button class="modal-close" id="modal-close">✕</button>
-    </div>
-    <div class="modal-body" id="modal-body"></div>
-  </div>
-</div>
-
 <!-- PROJECTS -->
-<section style="padding:60px 40px;position:relative;z-index:10;" id="projects">
+<section class="bsec" id="projects">
   <div class="sec-label">// projetos</div>
   <div class="proj-bento">
 
-    <div class="card-base pcard pcard-wide reveal" onclick="openModal('growth')">
+    <div class="cb pcard pcard-wide reveal" onclick="openModal('growth')">
       <div class="pcard-badge"><span class="status-dot" style="width:5px;height:5px;"></span>EM PRODUÇÃO</div>
       <div class="pcard-num">01</div>
       <div class="pcard-name">Growth Ocean — CRM & ERP</div>
-      <div class="pcard-desc">Sistema completo de gestão para agência de marketing digital. Do funil de captação até a entrega do projeto, tudo em uma plataforma.</div>
-      <div class="pcard-stack">
-        <span class="stag">Django 5.1</span><span class="stag">PostgreSQL 16</span><span class="stag">Docker</span><span class="stag">Railway</span><span class="stag">Asaas</span>
-      </div>
+      <div class="pcard-desc">Sistema completo de gestão para agência de marketing digital. Do funil de captação até a entrega, tudo em uma plataforma.</div>
+      <div class="pcard-stack"><span class="stag">Django 5.1</span><span class="stag">PostgreSQL 16</span><span class="stag">Docker</span><span class="stag">Railway</span><span class="stag">Asaas</span></div>
       <div class="pcard-hint">clique para ver detalhes →</div>
     </div>
 
-    <div class="card-base pcard reveal" style="transition-delay:0.05s" onclick="openModal('billing')">
+    <div class="cb pcard reveal" style="transition-delay:0.05s" onclick="openModal('billing')">
       <div class="pcard-badge"><span class="status-dot" style="width:5px;height:5px;"></span>EM PRODUÇÃO</div>
       <div class="pcard-num">02</div>
       <div class="pcard-name">Plataforma Multi-Cloud Billing</div>
       <div class="pcard-desc">Gestão centralizada de custos AWS, Azure e Huawei para empresa de cibersegurança e infraestrutura.</div>
-      <div class="pcard-stack">
-        <span class="stag">Python</span><span class="stag">Django</span><span class="stag">Docker Swarm</span><span class="stag">n8n</span>
-      </div>
+      <div class="pcard-stack"><span class="stag">Python</span><span class="stag">Django</span><span class="stag">Docker Swarm</span><span class="stag">n8n</span></div>
       <div class="pcard-hint">clique para ver detalhes →</div>
     </div>
 
-    <div class="card-base pcard reveal" style="transition-delay:0.1s" onclick="openModal('homelab')">
+    <div class="cb pcard reveal" style="transition-delay:0.1s" onclick="openModal('homelab')">
       <div class="pcard-num">03</div>
       <div class="pcard-name">Saud Homelab</div>
       <div class="pcard-desc">Ambiente pessoal de monitoramento com Zabbix e alertas automáticos via Telegram Bot API.</div>
-      <div class="pcard-stack">
-        <span class="stag">Zabbix</span><span class="stag">Python</span><span class="stag">Ubuntu Server</span><span class="stag">Docker</span>
-      </div>
+      <div class="pcard-stack"><span class="stag">Zabbix</span><span class="stag">Python</span><span class="stag">Ubuntu Server</span><span class="stag">Docker</span></div>
       <div class="pcard-hint">clique para ver detalhes →</div>
     </div>
 
@@ -350,89 +331,65 @@ footer .g{color:var(--green);}
 </section>
 
 <!-- EXPERIENCE -->
-<section style="padding:60px 40px;position:relative;z-index:10;" id="experience">
+<section class="bsec" id="experience">
   <div class="sec-label">// experiência</div>
   <div class="exp-bento">
-    <div class="card-base ecard reveal">
+    <div class="cb ecard reveal">
       <div class="ecard-period">Out/2025 – Atual <span class="ecard-now">● ATUAL</span></div>
       <div class="ecard-co">Prolinx</div>
       <div class="ecard-role">Analista de Monitoramento Jr. (NOC)</div>
-      <ul class="ecard-ul">
-        <li>Monitoramento 24x7 com Zabbix</li>
-        <li>Resposta a incidentes · Servidores Linux</li>
-        <li>VMware, Hyper-V e suporte técnico</li>
-      </ul>
+      <ul class="ecard-ul"><li>Monitoramento 24x7 com Zabbix</li><li>Resposta a incidentes · Servidores Linux</li><li>VMware, Hyper-V e suporte técnico</li></ul>
     </div>
-    <div class="card-base ecard reveal" style="transition-delay:0.05s">
+    <div class="cb ecard reveal" style="transition-delay:0.05s">
       <div class="ecard-period">Dez/2024 – Out/2025</div>
       <div class="ecard-co">Prolinx</div>
       <div class="ecard-role">Assistente de Suporte Técnico</div>
-      <ul class="ecard-ul">
-        <li>Suporte remoto · Windows · Microsoft 365</li>
-        <li>Firewall Sophos/pfSense · VPN site-to-site</li>
-      </ul>
+      <ul class="ecard-ul"><li>Suporte remoto · Windows · Microsoft 365</li><li>Firewall Sophos/pfSense · VPN site-to-site</li></ul>
     </div>
-    <div class="card-base ecard reveal" style="transition-delay:0.1s">
+    <div class="cb ecard reveal" style="transition-delay:0.1s">
       <div class="ecard-period">Jun/2024 – Nov/2024</div>
       <div class="ecard-co">Siematec Informática</div>
       <div class="ecard-role">Analista de Suporte</div>
-      <ul class="ecard-ul">
-        <li>Suporte ERP especializado</li>
-        <li>Análise SQL · Scripts corretivos</li>
-      </ul>
+      <ul class="ecard-ul"><li>Suporte ERP especializado</li><li>Análise SQL · Scripts corretivos</li></ul>
     </div>
-    <div class="card-base ecard reveal" style="transition-delay:0.15s">
+    <div class="cb ecard reveal" style="transition-delay:0.15s">
       <div class="ecard-period">Out/2023 – Jul/2024</div>
       <div class="ecard-co">Space Telecom</div>
       <div class="ecard-role">Técnico de Suporte</div>
-      <ul class="ecard-ul">
-        <li>Config de roteadores, ONUs e ONTs</li>
-        <li>Monitoramento e análise de rede</li>
-      </ul>
+      <ul class="ecard-ul"><li>Config de roteadores, ONUs e ONTs</li><li>Monitoramento e análise de rede</li></ul>
     </div>
   </div>
 </section>
 
 <!-- SKILLS -->
-<section style="padding:60px 40px;position:relative;z-index:10;" id="skills">
+<section class="bsec" id="skills">
   <div class="sec-label">// stack técnico</div>
   <div class="skills-bento">
-    <div class="card-base scard reveal"><div class="scard-title">// backend</div><div class="stags"><span class="sk on">Python</span><span class="sk on">Django</span><span class="sk">Node.js</span><span class="sk">Flask</span><span class="sk">REST API</span></div></div>
-    <div class="card-base scard reveal" style="transition-delay:0.05s"><div class="scard-title">// devops</div><div class="stags"><span class="sk on">Docker</span><span class="sk on">Docker Swarm</span><span class="sk">Traefik</span><span class="sk">Linux</span><span class="sk">Bash</span><span class="sk">n8n</span></div></div>
-    <div class="card-base scard reveal" style="transition-delay:0.1s"><div class="scard-title">// infra & cloud</div><div class="stags"><span class="sk">VMware</span><span class="sk">Hyper-V</span><span class="sk">AWS</span><span class="sk">Azure</span><span class="sk">Huawei Cloud</span></div></div>
-    <div class="card-base scard reveal" style="transition-delay:0.15s"><div class="scard-title">// banco de dados</div><div class="stags"><span class="sk on">PostgreSQL</span><span class="sk">MySQL</span><span class="sk">SQL</span></div></div>
-    <div class="card-base scard reveal" style="transition-delay:0.2s"><div class="scard-title">// monitoramento</div><div class="stags"><span class="sk on">Zabbix</span><span class="sk">Telegram Bot</span><span class="sk">NOC 24x7</span></div></div>
-    <div class="card-base scard reveal" style="transition-delay:0.25s"><div class="scard-title">// redes & seg.</div><div class="stags"><span class="sk">Sophos</span><span class="sk">pfSense</span><span class="sk">VPN</span><span class="sk">Firewall</span></div></div>
+    <div class="cb scard reveal"><div class="scard-title">// backend</div><div class="stags"><span class="sk on">Python</span><span class="sk on">Django</span><span class="sk">Node.js</span><span class="sk">Flask</span><span class="sk">REST API</span></div></div>
+    <div class="cb scard reveal" style="transition-delay:0.05s"><div class="scard-title">// devops</div><div class="stags"><span class="sk on">Docker</span><span class="sk on">Docker Swarm</span><span class="sk">Traefik</span><span class="sk">Linux</span><span class="sk">Bash</span><span class="sk">n8n</span></div></div>
+    <div class="cb scard reveal" style="transition-delay:0.1s"><div class="scard-title">// infra & cloud</div><div class="stags"><span class="sk">VMware</span><span class="sk">Hyper-V</span><span class="sk">AWS</span><span class="sk">Azure</span><span class="sk">Huawei Cloud</span></div></div>
+    <div class="cb scard reveal" style="transition-delay:0.15s"><div class="scard-title">// banco de dados</div><div class="stags"><span class="sk on">PostgreSQL</span><span class="sk">MySQL</span><span class="sk">SQL</span></div></div>
+    <div class="cb scard reveal" style="transition-delay:0.2s"><div class="scard-title">// monitoramento</div><div class="stags"><span class="sk on">Zabbix</span><span class="sk">Telegram Bot</span><span class="sk">NOC 24x7</span></div></div>
+    <div class="cb scard reveal" style="transition-delay:0.25s"><div class="scard-title">// redes & seg.</div><div class="stags"><span class="sk">Sophos</span><span class="sk">pfSense</span><span class="sk">VPN</span><span class="sk">Firewall</span></div></div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section style="padding:60px 40px;position:relative;z-index:10;" id="contact">
+<section class="bsec" id="contact">
   <div class="sec-label">// contato</div>
   <div class="contact-bento">
     <div class="term-card reveal">
       <div class="term-bar"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div>
       <div class="term-body">
-        <div class="term-col">
-          <span><span class="ps">❯</span> whoami</span>
-          <span style="color:var(--text)">Gustavo Saud</span>
-          <span>&nbsp;</span>
-          <span><span class="ps">❯</span> cat local.txt</span>
-          <span style="color:var(--text)">Contagem, MG</span>
-        </div>
-        <div class="term-col">
-          <span><span class="ps">❯</span> cat status.txt</span>
-          <span class="vl">disponível</span>
-          <span>&nbsp;</span>
-          <span><span class="ps">❯</span> <span class="blink">_</span></span>
-        </div>
+        <div class="term-col"><span><span class="ps">❯</span> whoami</span><span style="color:var(--text)">Gustavo Saud</span><span>&nbsp;</span><span><span class="ps">❯</span> cat local.txt</span><span style="color:var(--text)">Contagem, MG</span></div>
+        <div class="term-col"><span><span class="ps">❯</span> cat status.txt</span><span class="vl">disponível</span><span>&nbsp;</span><span><span class="ps">❯</span> <span class="blink">_</span></span></div>
       </div>
     </div>
-    <a href="mailto:gusaud@hotmail.com" class="card-base ccard reveal"><div class="ccard-label">// email</div><div class="ccard-val">gusaud@hotmail.com</div><div class="ccard-arrow">→</div></a>
-    <a href="https://linkedin.com/in/gustavosaud" target="_blank" class="card-base ccard reveal" style="transition-delay:0.05s"><div class="ccard-label">// linkedin</div><div class="ccard-val">linkedin.com/in/gustavosaud</div><div class="ccard-arrow">→</div></a>
-    <a href="https://github.com/robacenadev" target="_blank" class="card-base ccard reveal" style="transition-delay:0.1s"><div class="ccard-label">// github</div><div class="ccard-val">github.com/robacenadev</div><div class="ccard-arrow">→</div></a>
-    <a href="tel:+5531992109113" class="card-base ccard reveal" style="transition-delay:0.15s"><div class="ccard-label">// telefone</div><div class="ccard-val">(31) 99210-9113</div><div class="ccard-arrow">→</div></a>
-    <div class="card-base ccard reveal" style="transition-delay:0.2s;border-color:rgba(80,250,123,0.15);cursor:default;"><div class="ccard-label">// certs</div><div style="margin-top:auto;font-size:10px;color:var(--sub);line-height:1.9;">Sophos FW Engineer<br>Sophos Endpoint Eng.<br>ADS — Estácio</div></div>
+    <a href="mailto:gusaud@hotmail.com" class="cb ccard reveal"><div class="ccard-label">// email</div><div class="ccard-val">gusaud@hotmail.com</div><div class="ccard-arrow">→</div></a>
+    <a href="https://linkedin.com/in/gustavosaud" target="_blank" class="cb ccard reveal" style="transition-delay:0.05s"><div class="ccard-label">// linkedin</div><div class="ccard-val">linkedin.com/in/gustavosaud</div><div class="ccard-arrow">→</div></a>
+    <a href="https://github.com/robacenadev" target="_blank" class="cb ccard reveal" style="transition-delay:0.1s"><div class="ccard-label">// github</div><div class="ccard-val">github.com/robacenadev</div><div class="ccard-arrow">→</div></a>
+    <a href="tel:+5531992109113" class="cb ccard reveal" style="transition-delay:0.15s"><div class="ccard-label">// telefone</div><div class="ccard-val">(31) 99210-9113</div><div class="ccard-arrow">→</div></a>
+    <div class="cb ccard reveal" style="transition-delay:0.2s;border-color:rgba(80,250,123,0.15);cursor:default;"><div class="ccard-label">// certs</div><div style="margin-top:auto;font-size:10px;color:var(--sub);line-height:1.9;">Sophos FW Engineer<br>Sophos Endpoint Eng.<br>ADS — Estácio</div></div>
   </div>
 </section>
 
@@ -442,204 +399,95 @@ footer .g{color:var(--green);}
 </footer>
 
 <script>
-// ── MATRIX RAIN ──
+// MATRIX
 const canvas = document.getElementById('matrix-canvas');
 const ctx = canvas.getContext('2d');
-const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ01アイウエオ'.split('');
-const devops = ['docker','nginx','python','linux','bash','git','ssh','vim','sudo','grep','curl','kubectl','zabbix','ansible','terraform','django','postgres','redis','n8n','aws','k8s','tcp','udp','ip','dns','ssl','tls','http','api','cron','pid','cpu','ram','disk','swap'].join('').split('');
-const allChars = [...chars, ...devops];
+const devops = 'docker nginx python linux bash git ssh vim sudo grep curl kubectl zabbix ansible terraform django postgres redis n8n aws k8s tcp ip dns ssl http api cron pid cpu ram disk'.split(' ');
+const kana = 'アイウエオカキクケコサシスセソタチツテト01'.split('');
+const allChars = [...kana,...devops.join('').split('')];
 let cols, drops;
+function initMatrix(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;cols=Math.floor(canvas.width/18);drops=Array(cols).fill(1).map(()=>Math.random()*-100);}
+function drawMatrix(){ctx.fillStyle='rgba(2,10,5,0.05)';ctx.fillRect(0,0,canvas.width,canvas.height);drops.forEach((y,i)=>{const ch=allChars[Math.floor(Math.random()*allChars.length)];const b=Math.random();if(b>0.97){ctx.fillStyle='#fff';ctx.font='bold 13px IBM Plex Mono';}else if(b>0.8){ctx.fillStyle='#50fa7b';ctx.font='13px IBM Plex Mono';}else{ctx.fillStyle=`rgba(80,250,123,${0.1+b*0.2})`;ctx.font='13px IBM Plex Mono';}ctx.fillText(ch,i*18,y*18);if(y*18>canvas.height&&Math.random()>0.975)drops[i]=0;drops[i]+=0.4+Math.random()*0.3;});}
+initMatrix();window.addEventListener('resize',initMatrix);setInterval(drawMatrix,50);
 
-function initMatrix() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  cols = Math.floor(canvas.width / 18);
-  drops = Array(cols).fill(1).map(() => Math.random() * -100);
-}
+// FLOATING CMDS
+const cmds=['docker ps -a','git push origin main','zabbix_agentd -t','sudo systemctl restart nginx','kubectl get pods','ansible-playbook deploy.yml','ssh root@192.168.1.1','tail -f /var/log/syslog','python manage.py runserver','docker-compose up -d','grep -r "error" /var/log','htop','netstat -tlnp','df -h','free -m','journalctl -xe','terraform apply','curl -X POST /api/v1','pg_dump mydb > backup.sql','chmod 755 deploy.sh'];
+function spawnCmd(){const el=document.createElement('div');el.className='float-cmd';el.textContent=cmds[Math.floor(Math.random()*cmds.length)];el.style.left=Math.random()*90+'%';el.style.bottom='-20px';el.style.animationDuration=(10+Math.random()*8)+'s';document.body.appendChild(el);setTimeout(()=>el.remove(),20000);}
+setInterval(spawnCmd,1800);
 
-function drawMatrix() {
-  ctx.fillStyle = 'rgba(2,10,5,0.05)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  drops.forEach((y, i) => {
-    const char = allChars[Math.floor(Math.random() * allChars.length)];
-    const brightness = Math.random();
-    if (brightness > 0.97) {
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 13px IBM Plex Mono';
-    } else if (brightness > 0.8) {
-      ctx.fillStyle = '#50fa7b';
-      ctx.font = '13px IBM Plex Mono';
-    } else {
-      ctx.fillStyle = `rgba(80,250,123,${0.15 + brightness * 0.25})`;
-      ctx.font = '13px IBM Plex Mono';
-    }
-    ctx.fillText(char, i * 18, y * 18);
-    if (y * 18 > canvas.height && Math.random() > 0.975) drops[i] = 0;
-    drops[i] += 0.4 + Math.random() * 0.3;
-  });
-}
+// SCROLL REVEAL
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const d=parseFloat(e.target.style.transitionDelay||0)*1000;setTimeout(()=>e.target.classList.add('vis'),d);obs.unobserve(e.target);}});},{threshold:0.08});
+document.querySelectorAll('.reveal,.reveal-left').forEach(el=>obs.observe(el));
+setTimeout(()=>{document.querySelectorAll('#hero .reveal,#hero .reveal-left').forEach(el=>{const d=parseFloat(el.style.transitionDelay||0)*1000;setTimeout(()=>el.classList.add('vis'),d);});},100);
 
-initMatrix();
-window.addEventListener('resize', initMatrix);
-setInterval(drawMatrix, 50);
-
-// ── FLOATING COMMANDS ──
-const cmds = [
-  'docker ps -a','git push origin main','zabbix_agentd -t','sudo systemctl restart nginx',
-  'kubectl get pods','ansible-playbook deploy.yml','ssh root@192.168.1.1','tail -f /var/log/syslog',
-  'python manage.py runserver','docker-compose up -d','grep -r "error" /var/log','htop',
-  'netstat -tlnp','iptables -L','df -h','free -m','journalctl -xe','crontab -e',
-  'pip install django','npm run build','terraform apply','curl -X POST /api/v1',
-  'pg_dump mydb > backup.sql','cat /etc/hosts','chmod 755 deploy.sh','./start.sh',
-];
-function spawnCmd() {
-  const el = document.createElement('div');
-  el.className = 'float-cmd';
-  el.textContent = cmds[Math.floor(Math.random() * cmds.length)];
-  el.style.left = Math.random() * 90 + '%';
-  el.style.bottom = '-20px';
-  el.style.animationDelay = '0s';
-  el.style.animationDuration = (10 + Math.random() * 8) + 's';
-  el.style.opacity = '0';
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 20000);
-}
-setInterval(spawnCmd, 1800);
-
-// ── SCROLL REVEAL ──
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      const el = entry.target;
-      const delay = parseFloat(el.style.transitionDelay || 0) * 1000;
-      setTimeout(() => el.classList.add('vis'), delay);
-      observer.unobserve(el);
-    }
-  });
-}, { threshold: 0.08 });
-
-document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
-  observer.observe(el);
-});
-
-// Hero: trigger immediately
-setTimeout(() => {
-  document.querySelectorAll('#hero .reveal, #hero .reveal-left, #hero .reveal-right').forEach((el, i) => {
-    const base = parseFloat(el.style.transitionDelay || 0) * 1000;
-    setTimeout(() => el.classList.add('vis'), base);
-  });
-}, 100);
-
-// ── MODAL DATA ──
+// MODAL DATA
 const projects = {
-  growth: {
-    badge: '● EM PRODUÇÃO · CRM & ERP',
-    title: 'Growth Ocean',
-    sub: 'AGÊNCIA DE MARKETING DIGITAL · MAR/2026 – ATUAL',
-    about: 'Sistema web de gestão interna completo, construído do zero para a Easy Drop, agência de marketing digital. Centraliza toda a operação da empresa em uma única plataforma integrada — do primeiro contato com o cliente até a entrega final do projeto.',
-    features: [
-      'Funil de captação visual estilo Kanban — do lead ao cliente fechado',
-      'Módulo financeiro com controle de receitas, despesas e recorrências',
-      'Geração automática de contratos em PDF após aprovação de orçamento',
-      'Integração com Google Calendar para agendamentos e reuniões',
-      'Cobranças automáticas via Asaas — PIX, boleto e cartão',
-      'Portal do cliente para acompanhamento do projeto em tempo real',
-      'Notificações automáticas via WhatsApp integrado',
-      'Cadastro público com proteção anti-bot (honeypot)',
-    ],
-    stack: ['Django 5.1','Django REST Framework','PostgreSQL 16','Docker','Railway','Asaas API','Google Calendar API','JavaScript'],
-    actions: `<a href="https://ocean.easydropdigital.com.br/" target="_blank" class="modal-btn modal-btn-p">🌐 ver ao vivo</a>`,
+  growth:{
+    badge:'● EM PRODUÇÃO &nbsp;·&nbsp; CRM & ERP',
+    title:'Growth Ocean',
+    sub:'AGÊNCIA DE MARKETING DIGITAL &nbsp;·&nbsp; MAR/2026 – ATUAL',
+    about:'Sistema web de gestão interna completo, construído do zero para a Easy Drop, agência de marketing digital. Centraliza toda a operação da empresa em uma única plataforma — do primeiro contato com o cliente até a entrega final do projeto.',
+    features:['Funil de captação visual estilo Kanban — do lead ao cliente fechado','Módulo financeiro com controle de receitas, despesas e recorrências','Geração automática de contratos em PDF após aprovação de orçamento','Integração com Google Calendar para agendamentos e reuniões','Cobranças automáticas via Asaas — PIX, boleto e cartão','Portal do cliente para acompanhamento do projeto em tempo real','Notificações automáticas via WhatsApp integrado','Cadastro público com proteção anti-bot (honeypot)'],
+    stack:['Django 5.1','DRF','PostgreSQL 16','Docker','Railway','Asaas API','Google Calendar API','JavaScript'],
+    actions:`<a href="https://ocean.easydropdigital.com.br/" target="_blank" class="modal-btn modal-btn-p">🌐 ver ao vivo</a>`,
   },
-  billing: {
-    badge: '● EM PRODUÇÃO · CORPORATIVO',
-    title: 'Plataforma Multi-Cloud Billing',
-    sub: 'EMPRESA DE CIBERSEGURANÇA E INFRAESTRUTURA · DEZ/2025 – ATUAL',
-    about: 'Plataforma web corporativa multi-tenant para consolidação, análise e gestão de custos em ambientes AWS, Azure e Huawei Cloud. Assumi o projeto após saída do desenvolvedor anterior, atuando em toda a stack: refatoração de código legado, criação de pipelines, dashboards e infraestrutura.',
-    features: [
-      'Consolidação de billing de 3 clouds em uma única interface',
-      'Pipelines de ingestão automática de dados via n8n',
-      'Dashboards interativos com Chart.js por cliente e por serviço',
-      'Exportação automatizada de relatórios em PDF',
-      'Arquitetura multi-tenant com segregação de dados por cliente',
-      'Deploy em Docker Swarm com Traefik como reverse proxy',
-      'Refatoração de código legado e otimização de queries MySQL',
-    ],
-    stack: ['Python','Django','MySQL','n8n','Docker Swarm','Traefik','JavaScript','Chart.js'],
-    confidential: true,
-    actions: '',
+  billing:{
+    badge:'● EM PRODUÇÃO &nbsp;·&nbsp; CORPORATIVO',
+    title:'Plataforma Multi-Cloud Billing',
+    sub:'EMPRESA DE CIBERSEGURANÇA E INFRAESTRUTURA &nbsp;·&nbsp; DEZ/2025 – ATUAL',
+    about:'Plataforma web corporativa multi-tenant para consolidação, análise e gestão de custos em ambientes AWS, Azure e Huawei Cloud. Assumi o projeto após saída do desenvolvedor anterior, atuando em toda a stack: refatoração de código legado, pipelines de dados, dashboards e infraestrutura.',
+    features:['Consolidação de billing de 3 clouds em uma única interface','Pipelines de ingestão automática de dados via n8n','Dashboards interativos com Chart.js por cliente e por serviço','Exportação automatizada de relatórios em PDF','Arquitetura multi-tenant com segregação de dados por cliente','Deploy em Docker Swarm com Traefik como reverse proxy','Refatoração de código legado e otimização de queries MySQL'],
+    stack:['Python','Django','MySQL','n8n','Docker Swarm','Traefik','JavaScript','Chart.js'],
+    lock:true,
+    actions:'',
   },
-  homelab: {
-    badge: 'PROJETO PESSOAL · INFRA & MONITORAMENTO',
-    title: 'Saud Homelab',
-    sub: 'LABORATÓRIO PESSOAL DE INFRAESTRUTURA',
-    about: 'Ambiente pessoal de infraestrutura montado para estudos, testes e aprendizado de novas tecnologias. Foco em monitoramento, automação e virtualização.',
-    features: [
-      'Zabbix Server rodando em VM Ubuntu 22.04 via Hyper-V',
-      'Monitoramento de hosts, triggers e alertas configurados do zero',
-      'Script Python para envio de alertas via Telegram Bot API',
-      'Suporte a múltiplos usuários e host groups no bot do Telegram',
-      'Containerização de serviços auxiliares com Docker',
-      'Documentação completa de toda a infraestrutura no repositório',
-    ],
-    stack: ['Zabbix','Ubuntu Server 22.04','Python','Telegram Bot API','Hyper-V','Docker','MySQL','Bash'],
-    actions: `<a href="https://github.com/robacenadev/saud-homelab" target="_blank" class="modal-btn modal-btn-g">⌥ ver no GitHub</a>`,
+  homelab:{
+    badge:'PROJETO PESSOAL &nbsp;·&nbsp; INFRA & MONITORAMENTO',
+    title:'Saud Homelab',
+    sub:'LABORATÓRIO PESSOAL DE INFRAESTRUTURA',
+    about:'Ambiente pessoal de infraestrutura montado para estudos, testes e aprendizado de novas tecnologias. Foco em monitoramento, automação e virtualização com documentação completa no repositório.',
+    features:['Zabbix Server em VM Ubuntu 22.04 via Hyper-V, configurado do zero','Monitoramento de hosts, triggers e alertas personalizados','Script Python para envio de alertas via Telegram Bot API','Suporte a múltiplos usuários e host groups no bot','Containerização de serviços auxiliares com Docker','Documentação completa de toda a infraestrutura'],
+    stack:['Zabbix','Ubuntu Server 22.04','Python','Telegram Bot API','Hyper-V','Docker','MySQL','Bash'],
+    actions:`<a href="https://github.com/robacenadev/saud-homelab" target="_blank" class="modal-btn modal-btn-g">⌥ ver no GitHub</a>`,
   },
 };
 
-function openModal(id) {
-  const p = projects[id];
-  const overlay = document.getElementById('modal-overlay');
-
-  document.getElementById('modal-header-content').innerHTML = `
+function openModal(id){
+  const p=projects[id];
+  document.getElementById('modal-header-content').innerHTML=`
     <div>
       <div class="modal-badge">${p.badge}</div>
       <div class="modal-title">${p.title}</div>
       <div class="modal-sub">${p.sub}</div>
     </div>`;
-
-  let body = `
-    <div class="modal-section">
-      <div class="modal-section-title">// sobre o projeto</div>
-      <div class="modal-text">${p.about}</div>
-    </div>
-    <div class="modal-section">
-      <div class="modal-section-title">// funcionalidades</div>
-      <ul class="modal-features">${p.features.map(f => `<li>${f}</li>`).join('')}</ul>
-    </div>
-    <div class="modal-section">
-      <div class="modal-section-title">// stack técnico</div>
-      <div class="modal-stack">${p.stack.map(s => `<span class="modal-stag">${s}</span>`).join('')}</div>
-    </div>`;
-
-  if (p.confidential) {
-    body += `
-    <div class="modal-confidential">
-      <div class="modal-confidential-icon">🔒</div>
-      <div class="modal-confidential-text">
-        Este projeto é de uso interno corporativo. Por questões de <strong style="color:var(--green)">LGPD e confidencialidade</strong>, o código-fonte e a URL de acesso não são divulgados publicamente. O projeto está em produção ativa e sob manutenção contínua.
-      </div>
-    </div>`;
-  }
-
-  if (p.actions) {
-    body += `<div class="modal-actions">${p.actions}</div>`;
-  }
-
-  document.getElementById('modal-body').innerHTML = body;
-  overlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
+  let body=`
+    <div class="modal-section-title">// sobre o projeto</div>
+    <p class="modal-text">${p.about}</p>
+    <div class="modal-divider"></div>
+    <div class="modal-section-title">// funcionalidades</div>
+    <ul class="modal-features">${p.features.map(f=>`<li>${f}</li>`).join('')}</ul>
+    <div class="modal-divider"></div>
+    <div class="modal-section-title">// stack técnico</div>
+    <div class="modal-stack">${p.stack.map(s=>`<span class="modal-stag">${s}</span>`).join('')}</div>`;
+  if(p.lock){body+=`
+    <div class="modal-lock">
+      <div class="modal-lock-icon">🔒</div>
+      <div class="modal-lock-text">Este projeto é de uso interno corporativo. Por questões de <strong>LGPD e confidencialidade</strong>, o código-fonte e a URL de acesso não são divulgados publicamente. O projeto está em produção ativa e sob manutenção contínua.</div>
+    </div>`;}
+  if(p.actions){body+=`<div class="modal-actions">${p.actions}</div>`;}
+  document.getElementById('modal-body').innerHTML=body;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
 }
 
-function closeModal() {
+function closeModal(){
   document.getElementById('modal-overlay').classList.remove('open');
-  document.body.style.overflow = '';
+  document.body.style.overflow='';
 }
 
-document.getElementById('modal-close').addEventListener('click', closeModal);
-document.getElementById('modal-overlay').addEventListener('click', (e) => {
-  if (e.target === e.currentTarget) closeModal();
-});
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+document.getElementById('modal-close').addEventListener('click',closeModal);
+document.getElementById('modal-overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 </script>
 </body>
 </html>
