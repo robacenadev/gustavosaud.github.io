@@ -301,7 +301,7 @@ footer .g{color:var(--green);}
   <div class="sec-label">// projetos</div>
   <div class="proj-bento">
 
-    <div class="cb pcard pcard-wide reveal" onclick="openModal('growth')">
+    <div class="cb pcard reveal" onclick="openModal('growth')">
       <div class="pcard-badge"><span class="status-dot" style="width:5px;height:5px;"></span>EM PRODUÇÃO</div>
       <div class="pcard-num">01</div>
       <div class="pcard-name">Growth Ocean — CRM & ERP</div>
@@ -324,6 +324,14 @@ footer .g{color:var(--green);}
       <div class="pcard-name">Saud Homelab</div>
       <div class="pcard-desc">Ambiente pessoal de monitoramento com Zabbix e alertas automáticos via Telegram Bot API.</div>
       <div class="pcard-stack"><span class="stag">Zabbix</span><span class="stag">Python</span><span class="stag">Ubuntu Server</span><span class="stag">Docker</span></div>
+      <div class="pcard-hint">clique para ver detalhes →</div>
+    </div>
+
+    <div class="cb pcard reveal" style="transition-delay:0.15s" onclick="openModal('transparencia')">
+      <div class="pcard-num">04</div>
+      <div class="pcard-name">Transparência Bot</div>
+      <div class="pcard-desc">Bot de automação RPA para consulta de pessoas físicas no Portal da Transparência do Governo Federal, com bypass de WAF e evidência em Base64.</div>
+      <div class="pcard-stack"><span class="stag">Python</span><span class="stag">FastAPI</span><span class="stag">Playwright</span><span class="stag">Docker</span><span class="stag">n8n</span></div>
       <div class="pcard-hint">clique para ver detalhes →</div>
     </div>
 
@@ -440,6 +448,24 @@ const projects = {
     stack:['Python','Django','MySQL','n8n','Docker Swarm','Traefik','JavaScript','Chart.js'],
     lock:true,
     actions:'',
+  },
+  transparencia:{
+    badge:'DESAFIO TÉCNICO &nbsp;·&nbsp; RPA & HIPERAUTOMAÇÃO',
+    title:'Transparência Bot',
+    sub:'BOT DE AUTOMAÇÃO WEB · PORTAL DA TRANSPARÊNCIA GOV.BR',
+    about:'Bot de automação web (RPA) para consulta de pessoas físicas no Portal da Transparência do Governo Federal. Desenvolvido como desafio técnico para vaga de Full Stack Developer Python (RPA e Hiperautomação). Realiza consultas automatizadas, extrai dados de benefícios e retorna evidência em Base64.',
+    features:[
+      'Bypass de WAF AWS CloudFront com Chromium headless + anti-detecção via add_init_script',
+      'Navegação por DOM assíncrono usando aria-controls para localizar accordion de benefícios',
+      'Captura de evidência em Base64 com accordion expandido e banner LGPD removido',
+      'API REST com FastAPI e documentação Swagger automática',
+      'Suporte a busca por nome, CPF e NIS com detecção automática do tipo de identificador',
+      'Orquestração completa via n8n: Webhook → API → Google Drive → Google Sheets',
+      'Containerização com Docker Compose — bot API (8001) + n8n (5678)',
+      'Tratamento de erros específicos por tipo de identificador e timeout do portal',
+    ],
+    stack:['Python 3.12','FastAPI','Playwright','Docker','Docker Compose','n8n','Google Drive API','Google Sheets API'],
+    actions:`<a href="https://github.com/robacenadev/transparencia-bot" target="_blank" class="modal-btn modal-btn-g">⌥ ver no GitHub</a>`,
   },
   homelab:{
     badge:'PROJETO PESSOAL &nbsp;·&nbsp; INFRA & MONITORAMENTO',
