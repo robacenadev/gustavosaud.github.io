@@ -9,21 +9,19 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 :root{
-  --bg:#020a05;
-  --card:#07110a;
-  --card2:#0c1a10;
-  --border:#0e1f12;
-  --bord2:#163320;
-  --green:#50fa7b;
-  --muted:#2d6642;
-  --dim:#1a4028;
-  --text:#dff2e7;
-  --sub:#4a7a5e;
+  --bg:#030d08;
+  --card:#071410;
+  --card2:#0b1a13;
+  --border:#0d1f17;
+  --bord2:#163328;
+  --green:#7dcea0;
+  --muted:#3a6b52;
+  --dim:#1e4a38;
+  --text:#e8f4ee;
+  --sub:#4d7a63;
 }
 body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospace;overflow-x:hidden;}
-#matrix-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.18;pointer-events:none;}
-.float-cmd{position:fixed;font-size:10px;color:var(--green);opacity:0;pointer-events:none;z-index:1;white-space:nowrap;font-family:'IBM Plex Mono',monospace;letter-spacing:0.05em;animation:floatup 12s linear infinite;}
-@keyframes floatup{0%{opacity:0;transform:translateY(0);}5%{opacity:0.25;}90%{opacity:0.1;}100%{opacity:0;transform:translateY(-100vh);}}
+#particle-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
 body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.06) 3px,rgba(0,0,0,0.06) 4px);pointer-events:none;z-index:2;}
 
 /* NAV */
@@ -52,14 +50,14 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 /* HERO RIGHT */
 .hero-right{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .hcard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;position:relative;overflow:hidden;transition:border-color 0.3s,background 0.3s,transform 0.3s,box-shadow 0.3s;}
-.hcard:hover{border-color:var(--bord2);background:var(--card2);transform:translateY(-3px);box-shadow:0 8px 32px rgba(80,250,123,0.06);}
-.hcard::before{content:'';position:absolute;inset:0;border-radius:8px;background:radial-gradient(circle at 50% 0%,rgba(80,250,123,0.05),transparent 70%);opacity:0;transition:opacity 0.3s;}
+.hcard:hover{border-color:var(--bord2);background:var(--card2);transform:translateY(-3px);box-shadow:0 8px 32px rgba(125,206,160,0.06);}
+.hcard::before{content:'';position:absolute;inset:0;border-radius:8px;background:radial-gradient(circle at 50% 0%,rgba(125,206,160,0.05),transparent 70%);opacity:0;transition:opacity 0.3s;}
 .hcard:hover::before{opacity:1;}
 .hcard-label{font-size:9px;color:var(--muted);letter-spacing:0.2em;margin-bottom:10px;}
 .hcard-val{font-size:22px;font-weight:600;color:var(--green);letter-spacing:-0.02em;}
 .hcard-sub{font-size:10px;color:var(--sub);margin-top:4px;}
 .status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:6px;animation:pulse-dot 2s ease-in-out infinite;}
-@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(80,250,123,0.5);}50%{box-shadow:0 0 0 6px rgba(80,250,123,0);}}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(125,206,160,0.5);}50%{box-shadow:0 0 0 6px rgba(125,206,160,0);}}
 .tech-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
 .tech{font-size:9px;color:var(--muted);border:1px solid var(--border);padding:3px 8px;border-radius:2px;transition:all 0.2s;}
 .tech.on,.tech:hover{color:var(--green);border-color:var(--dim);}
@@ -71,7 +69,7 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 
 /* CARD BASE */
 .cb{background:var(--card);border:1px solid var(--border);border-radius:10px;transition:background 0.3s,border-color 0.3s,transform 0.3s,box-shadow 0.3s;position:relative;overflow:hidden;}
-.cb:hover{background:var(--card2);border-color:var(--bord2);transform:translateY(-4px);box-shadow:0 12px 40px rgba(80,250,123,0.07);}
+.cb:hover{background:var(--card2);border-color:var(--bord2);transform:translateY(-4px);box-shadow:0 12px 40px rgba(125,206,160,0.07);}
 .cb::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent);transform:scaleX(0);transition:transform 0.4s ease;}
 .cb:hover::after{transform:scaleX(1);}
 
@@ -81,7 +79,7 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 .pcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--green);transform:scaleY(0);transform-origin:bottom;transition:transform 0.4s ease;}
 .pcard:hover::before{transform:scaleY(1);}
 .pcard-wide{grid-column:span 2;}
-.pcard-badge{display:inline-flex;align-items:center;gap:6px;font-size:9px;color:var(--green);background:rgba(80,250,123,0.07);border:1px solid rgba(80,250,123,0.15);padding:4px 10px;border-radius:2px;margin-bottom:16px;letter-spacing:0.12em;}
+.pcard-badge{display:inline-flex;align-items:center;gap:6px;font-size:9px;color:var(--green);background:rgba(125,206,160,0.07);border:1px solid rgba(125,206,160,0.15);padding:4px 10px;border-radius:2px;margin-bottom:16px;letter-spacing:0.12em;}
 .pcard-num{font-size:9px;color:var(--dim);margin-bottom:8px;letter-spacing:0.1em;}
 .pcard-name{font-size:17px;font-weight:600;color:var(--text);margin-bottom:10px;line-height:1.2;}
 .pcard-desc{font-size:11px;color:var(--sub);line-height:1.9;font-weight:300;}
@@ -95,7 +93,7 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 .exp-bento{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .ecard{padding:26px;}
 .ecard-period{font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
-.ecard-now{font-size:8px;color:var(--green);background:rgba(80,250,123,0.07);border:1px solid rgba(80,250,123,0.15);padding:2px 7px;border-radius:2px;letter-spacing:0.1em;}
+.ecard-now{font-size:8px;color:var(--green);background:rgba(125,206,160,0.07);border:1px solid rgba(125,206,160,0.15);padding:2px 7px;border-radius:2px;letter-spacing:0.1em;}
 .ecard-co{font-size:10px;color:var(--green);letter-spacing:0.15em;margin-bottom:5px;}
 .ecard-role{font-size:14px;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.3;}
 .ecard-ul{list-style:none;display:flex;flex-direction:column;gap:7px;}
@@ -140,8 +138,8 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 }
 .modal-overlay.open{opacity:1;pointer-events:all;}
 .modal{
-  background:#060d08;
-  border:1px solid #1c3824;
+  background:#060f0a;
+  border:1px solid #1a3828;
   border-radius:12px;
   width:100%;max-width:700px;
   max-height:88vh;overflow-y:auto;
@@ -157,12 +155,12 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 .modal-overlay.open .modal{transform:none;}
 .modal-header{
   padding:32px 36px 24px;
-  border-bottom:1px solid #0e1e12;
+  border-bottom:1px solid #0d1f17;
   display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
-  position:sticky;top:0;background:#060d08;z-index:1;border-radius:12px 12px 0 0;
+  position:sticky;top:0;background:#060f0a;z-index:1;border-radius:12px 12px 0 0;
 }
 .modal-close{
-  background:none;border:1px solid #1a3a22;color:#2d6642;
+  background:none;border:1px solid #1a3828;color:#3a6b52;
   width:34px;height:34px;border-radius:4px;cursor:pointer;
   font-size:14px;display:flex;align-items:center;justify-content:center;
   transition:all 0.2s;flex-shrink:0;font-family:'IBM Plex Mono',monospace;
@@ -173,21 +171,21 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 .modal-badge{
   display:inline-flex;align-items:center;gap:6px;
   font-size:9px;color:var(--green);
-  background:rgba(80,250,123,0.07);border:1px solid rgba(80,250,123,0.2);
+  background:rgba(125,206,160,0.07);border:1px solid rgba(125,206,160,0.2);
   padding:5px 12px;border-radius:2px;margin-bottom:14px;letter-spacing:0.15em;
 }
 .modal-title{font-size:24px;font-weight:600;color:#ffffff;line-height:1.2;margin-bottom:6px;}
-.modal-sub{font-size:10px;color:#2d6642;letter-spacing:0.18em;}
+.modal-sub{font-size:10px;color:#3a6b52;letter-spacing:0.18em;}
 .modal-divider{height:1px;background:#0e1e12;margin:24px 0;}
 .modal-section-title{
   font-size:9px;color:var(--green);letter-spacing:0.25em;
   margin-bottom:12px;display:flex;align-items:center;gap:10px;
 }
 .modal-section-title::after{content:'';flex:1;height:1px;background:#0e1e12;}
-.modal-text{font-size:13px;color:#a8c4b0;line-height:1.9;font-weight:300;}
+.modal-text{font-size:13px;color:#b0ccc0;line-height:1.9;font-weight:300;}
 .modal-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:4px;}
 .modal-features li{
-  font-size:13px;color:#a8c4b0;
+  font-size:13px;color:#b0ccc0;
   line-height:1.7;padding-left:18px;
   position:relative;font-weight:300;
 }
@@ -195,12 +193,12 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 .modal-stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
 .modal-stag{
   font-size:11px;color:var(--green);
-  border:1px solid rgba(80,250,123,0.2);
-  background:rgba(80,250,123,0.05);
+  border:1px solid rgba(125,206,160,0.2);
+  background:rgba(125,206,160,0.05);
   padding:6px 14px;border-radius:3px;
   letter-spacing:0.04em;
 }
-.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px;padding-top:24px;border-top:1px solid #0e1e12;}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px;padding-top:24px;border-top:1px solid #0d1f17;}
 .modal-btn{
   font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;
   padding:11px 22px;border-radius:3px;text-decoration:none;
@@ -208,16 +206,16 @@ h1{font-size:clamp(52px,7vw,88px);font-weight:600;line-height:0.9;letter-spacing
 }
 .modal-btn-p{background:var(--green);color:#020a05;font-weight:600;border:1px solid var(--green);}
 .modal-btn-p:hover{background:transparent;color:var(--green);}
-.modal-btn-g{border:1px solid #1c3824;color:#4a7a5e;}
+.modal-btn-g{border:1px solid #1a3828;color:#4a7a5e;}
 .modal-btn-g:hover{border-color:var(--green);color:var(--green);}
 .modal-lock{
   display:flex;align-items:flex-start;gap:14px;
-  background:rgba(80,250,123,0.03);
-  border:1px solid rgba(80,250,123,0.1);
+  background:rgba(125,206,160,0.03);
+  border:1px solid rgba(125,206,160,0.1);
   border-radius:6px;padding:18px;margin-top:24px;
 }
 .modal-lock-icon{font-size:18px;flex-shrink:0;}
-.modal-lock-text{font-size:12px;color:#5a8a6a;line-height:1.9;}
+.modal-lock-text{font-size:12px;color:#5a8a72;line-height:1.9;}
 .modal-lock-text strong{color:var(--green);font-weight:500;}
 
 /* FOOTER */
@@ -244,7 +242,7 @@ footer .g{color:var(--green);}
 </head>
 <body>
 
-<canvas id="matrix-canvas"></canvas>
+<canvas id="particle-canvas"></canvas>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay">
@@ -397,7 +395,7 @@ footer .g{color:var(--green);}
     <a href="https://linkedin.com/in/gustavosaud" target="_blank" class="cb ccard reveal" style="transition-delay:0.05s"><div class="ccard-label">// linkedin</div><div class="ccard-val">linkedin.com/in/gustavosaud</div><div class="ccard-arrow">→</div></a>
     <a href="https://github.com/robacenadev" target="_blank" class="cb ccard reveal" style="transition-delay:0.1s"><div class="ccard-label">// github</div><div class="ccard-val">github.com/robacenadev</div><div class="ccard-arrow">→</div></a>
     <a href="tel:+5531992109113" class="cb ccard reveal" style="transition-delay:0.15s"><div class="ccard-label">// telefone</div><div class="ccard-val">(31) 99210-9113</div><div class="ccard-arrow">→</div></a>
-    <div class="cb ccard reveal" style="transition-delay:0.2s;border-color:rgba(80,250,123,0.15);cursor:default;"><div class="ccard-label">// certs</div><div style="margin-top:auto;font-size:10px;color:var(--sub);line-height:1.9;">Sophos FW Engineer<br>Sophos Endpoint Eng.<br>ADS — Estácio</div></div>
+    <div class="cb ccard reveal" style="transition-delay:0.2s;border-color:rgba(125,206,160,0.15);cursor:default;"><div class="ccard-label">// certs</div><div style="margin-top:auto;font-size:10px;color:var(--sub);line-height:1.9;">Sophos FW Engineer<br>Sophos Endpoint Eng.<br>ADS — Estácio</div></div>
   </div>
 </section>
 
@@ -407,21 +405,82 @@ footer .g{color:var(--green);}
 </footer>
 
 <script>
-// MATRIX
-const canvas = document.getElementById('matrix-canvas');
+// PARTICLE NETWORK
+const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
-const devops = 'docker nginx python linux bash git ssh vim sudo grep curl kubectl zabbix ansible terraform django postgres redis n8n aws k8s tcp ip dns ssl http api cron pid cpu ram disk'.split(' ');
-const kana = 'アイウエオカキクケコサシスセソタチツテト01'.split('');
-const allChars = [...kana,...devops.join('').split('')];
-let cols, drops;
-function initMatrix(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;cols=Math.floor(canvas.width/18);drops=Array(cols).fill(1).map(()=>Math.random()*-100);}
-function drawMatrix(){ctx.fillStyle='rgba(2,10,5,0.05)';ctx.fillRect(0,0,canvas.width,canvas.height);drops.forEach((y,i)=>{const ch=allChars[Math.floor(Math.random()*allChars.length)];const b=Math.random();if(b>0.97){ctx.fillStyle='#fff';ctx.font='bold 13px IBM Plex Mono';}else if(b>0.8){ctx.fillStyle='#50fa7b';ctx.font='13px IBM Plex Mono';}else{ctx.fillStyle=`rgba(80,250,123,${0.1+b*0.2})`;ctx.font='13px IBM Plex Mono';}ctx.fillText(ch,i*18,y*18);if(y*18>canvas.height&&Math.random()>0.975)drops[i]=0;drops[i]+=0.4+Math.random()*0.3;});}
-initMatrix();window.addEventListener('resize',initMatrix);setInterval(drawMatrix,50);
+let particles = [];
+const PARTICLE_COUNT = 90;
+const MAX_DIST = 140;
 
-// FLOATING CMDS
-const cmds=['docker ps -a','git push origin main','zabbix_agentd -t','sudo systemctl restart nginx','kubectl get pods','ansible-playbook deploy.yml','ssh root@192.168.1.1','tail -f /var/log/syslog','python manage.py runserver','docker-compose up -d','grep -r "error" /var/log','htop','netstat -tlnp','df -h','free -m','journalctl -xe','terraform apply','curl -X POST /api/v1','pg_dump mydb > backup.sql','chmod 755 deploy.sh'];
-function spawnCmd(){const el=document.createElement('div');el.className='float-cmd';el.textContent=cmds[Math.floor(Math.random()*cmds.length)];el.style.left=Math.random()*90+'%';el.style.bottom='-20px';el.style.animationDuration=(10+Math.random()*8)+'s';document.body.appendChild(el);setTimeout(()=>el.remove(),20000);}
-setInterval(spawnCmd,1800);
+function initParticles() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  particles = [];
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      r: Math.random() * 1.5 + 0.5,
+    });
+  }
+}
+
+function drawParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw connections
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < MAX_DIST) {
+        const alpha = 0.35 * (1 - dist / MAX_DIST);
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(125,206,160,${alpha})`;
+        ctx.lineWidth = 0.6;
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  // Draw particles
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(125,206,160,0.75)';
+    ctx.fill();
+  });
+}
+
+initParticles();
+window.addEventListener('resize', initParticles);
+setInterval(drawParticles, 30);
+
+// MOUSE INTERACTION — particles attracted to cursor
+let mouseX = -999, mouseY = -999;
+document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+setInterval(() => {
+  particles.forEach(p => {
+    const dx = mouseX - p.x, dy = mouseY - p.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 120 && dist > 0) {
+      p.vx += (dx / dist) * 0.03;
+      p.vy += (dy / dist) * 0.03;
+      const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+      if (speed > 1.5) { p.vx = (p.vx / speed) * 1.5; p.vy = (p.vy / speed) * 1.5; }
+    }
+  });
+}, 30);
 
 // SCROLL REVEAL
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const d=parseFloat(e.target.style.transitionDelay||0)*1000;setTimeout(()=>e.target.classList.add('vis'),d);obs.unobserve(e.target);}});},{threshold:0.08});
